@@ -1,0 +1,13 @@
+agreement :: Contract
+agreement =
+  If
+    (aliceChosen `ValueEQ` (Constant 0))
+    (Pay "alice" (Party "bob") ada price Close)
+    Close
+
+arbitrate :: Contract
+arbitrate =
+  When  [ Case carolClose Close,
+          Case carolPay (Pay "alice" (Party "bob") ada price Close) ]
+        100
+        Close
