@@ -1,0 +1,17 @@
+contract :: Contract
+contract = When [Case (Deposit "alice" "alice" ada price) inner]
+                10
+                Close
+
+inner :: Contract
+inner =
+  When [ Case aliceChoice
+              (When [ Case bobChoice
+                          (If (aliceChosen `ValueEQ` bobChosen)
+                             agreement
+                             arbitrate) ]
+                    60
+                    arbitrate)
+        ]
+        40
+        Close
