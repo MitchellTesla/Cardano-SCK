@@ -1,0 +1,5 @@
+When aliceChoice
+     (When bobChoice
+           (If (aliceChosen `ValueEQ` bobChosen)
+               agreement
+               arbitrate))
