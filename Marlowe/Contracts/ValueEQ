@@ -1,0 +1,2 @@
+(alias) const ValueEQ: (lhs: EValue, rhs: EValue) => Observation
+import ValueEQ

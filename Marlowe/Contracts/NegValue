@@ -1,0 +1,2 @@
+(alias) const NegValue: (value: EValue) => Value
+import NegValue

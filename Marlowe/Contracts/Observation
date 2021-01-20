@@ -1,0 +1,12 @@
+(alias) type Observation = boolean | {
+    "both": Observation;
+    "and": Observation;
+} | {
+    "either": Observation;
+    "or": Observation;
+} | {
+    "not": Observation;
+} | ... 5 more ... | {
+    ...;
+}
+import Observation

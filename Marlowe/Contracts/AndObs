@@ -1,0 +1,2 @@
+(alias) const AndObs: (lhs: Observation, rhs: Observation) => Observation
+import AndObs

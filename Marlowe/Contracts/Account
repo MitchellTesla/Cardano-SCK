@@ -1,0 +1,2 @@
+(alias) function Account(party: Party): Payee
+import Account

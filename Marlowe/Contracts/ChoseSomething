@@ -1,0 +1,2 @@
+(alias) const ChoseSomething: (choiceId: ChoiceId) => Observation
+import ChoseSomething

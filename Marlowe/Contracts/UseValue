@@ -1,0 +1,2 @@
+(alias) const UseValue: (valueId: string) => Value
+import UseValue

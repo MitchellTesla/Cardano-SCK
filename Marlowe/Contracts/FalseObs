@@ -1,0 +1,2 @@
+(alias) const FalseObs: Observation
+import FalseObs

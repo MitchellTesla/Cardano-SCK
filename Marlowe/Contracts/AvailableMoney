@@ -1,0 +1,2 @@
+(alias) const AvailableMoney: (token: Token, accountId: Party) => Value
+import AvailableMoney

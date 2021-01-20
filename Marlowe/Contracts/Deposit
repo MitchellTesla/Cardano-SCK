@@ -1,0 +1,2 @@
+(alias) const Deposit: (accId: Party, party: Party, token: Token, value: EValue) => Action
+import Deposit

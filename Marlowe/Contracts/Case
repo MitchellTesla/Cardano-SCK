@@ -1,0 +1,6 @@
+(alias) type Case = {
+    "case": Action;
+    "then": Contract;
+}
+(alias) const Case: (caseAction: Action, continuation: Contract) => Case
+import Case

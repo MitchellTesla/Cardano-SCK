@@ -1,0 +1,18 @@
+(alias) type Contract = "close" | {
+    "pay": Value;
+    "token": Token;
+    "from_account": Party;
+    "to": Payee;
+    "then": Contract;
+} | {
+    "if": Observation;
+    "then": Contract;
+    "else": Contract;
+} | {
+    ...;
+} | {
+    ...;
+} | {
+    ...;
+}
+import Contract

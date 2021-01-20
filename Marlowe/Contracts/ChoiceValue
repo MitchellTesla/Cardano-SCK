@@ -1,0 +1,2 @@
+(alias) const ChoiceValue: (choiceId: ChoiceId) => Value
+import ChoiceValue

@@ -1,0 +1,29 @@
+import {
+    PK, Role, Account, Party, ada, AvailableMoney, Constant, NegValue, AddValue,
+    SubValue, MulValue, Scale, ChoiceValue, SlotIntervalStart, SlotIntervalEnd,
+    UseValue, Cond, AndObs, OrObs, NotObs, ChoseSomething, ValueGE, ValueGT,
+    ValueLT, ValueLE, ValueEQ, TrueObs, FalseObs, Deposit, Choice, Notify,
+    Close, Pay, If, When, Let, Assert, SomeNumber, AccountId, ChoiceId, Token,
+    ValueId, Value, EValue, Observation, Bound, Action, Payee, Case, Contract
+} from 'marlowe-js';
+
+(function (): Contract {
+
+    const investor : Party = Role("investor");
+    const issuer : Party = Role("issuer");
+
+    const contract : Contract = When([Case(
+                                        Deposit(investor, investor, ada, 850n),
+                                        Pay(investor, Party(issuer), ada, 850n,
+                                            When([ Case(Deposit(investor, issuer, ada, 1000n),
+                                                        Pay(investor, Party(investor), ada, 1000n, Close))
+                                                ],
+                                                20n,
+                                                Close)
+                                        ))],
+                                    10n,
+                                    Close);
+
+    return contract;
+
+})

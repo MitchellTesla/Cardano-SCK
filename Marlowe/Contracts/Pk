@@ -1,0 +1,2 @@
+(alias) const PK: (pubKey: string) => Party
+import PK

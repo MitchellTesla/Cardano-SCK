@@ -1,0 +1,2 @@
+(alias) const ValueGT: (lhs: EValue, rhs: EValue) => Observation
+import ValueGT

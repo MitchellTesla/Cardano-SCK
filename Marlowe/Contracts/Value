@@ -1,0 +1,15 @@
+(alias) type Value = {
+    "amount_of_token": Token;
+    "in_account": Party;
+} | bignumber.BigNumber | {
+    "negate": Value;
+} | {
+    "add": Value;
+    "and": Value;
+} | {
+    "value": Value;
+    "minus": Value;
+} | ... 6 more ... | {
+    ...;
+}
+import Value

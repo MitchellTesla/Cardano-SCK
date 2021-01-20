@@ -1,0 +1,2 @@
+(alias) const Role: (roleToken: string) => Party
+import Role

@@ -1,0 +1,6 @@
+(alias) type Bound = {
+    "from": bignumber.BigNumber;
+    "to": bignumber.BigNumber;
+}
+(alias) const Bound: (boundMin: SomeNumber, boundMax: SomeNumber) => Bound
+import Bound

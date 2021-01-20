@@ -1,0 +1,2 @@
+(alias) const AddValue: (lhs: EValue, rhs: EValue) => Value
+import AddValue

@@ -1,0 +1,61 @@
+import {
+    PK, Role, Account, Party, ada, AvailableMoney, Constant, NegValue, AddValue,
+    SubValue, MulValue, Scale, ChoiceValue, SlotIntervalStart, SlotIntervalEnd,
+    UseValue, Cond, AndObs, OrObs, NotObs, ChoseSomething, ValueGE, ValueGT,
+    ValueLT, ValueLE, ValueEQ, TrueObs, FalseObs, Deposit, Choice, Notify,
+    Close, Pay, If, When, Let, Assert, SomeNumber, AccountId, ChoiceId, Token,
+    ValueId, Value, EValue, Observation, Bound, Action, Payee, Case, Contract
+} from 'marlowe-js';
+
+(function (): Contract {
+
+    const lovelacePerAda : SomeNumber = 1000000n;
+    const amountOfAda : SomeNumber = 1000n;
+    const amountOfLovelace : SomeNumber = lovelacePerAda * amountOfAda;
+    const amountOfDollars : SomeNumber = 100n;
+
+    const dollars : Token = Token("85bb65", "dollar")
+
+    type SwapParty = {
+    party: Party;
+    currency: Token;
+    amount: SomeNumber;
+    };
+
+    const alice : SwapParty = {
+    party: Role("alice"),
+    currency: ada,
+    amount: amountOfLovelace
+    }
+
+    const bob : SwapParty = {
+    party: Role("bob"),
+    currency: dollars,
+    amount: amountOfDollars
+    }
+
+    const makeDeposit = function(src : SwapParty, timeout : SomeNumber,
+                                continuation : Contract) : Contract
+    {
+    return When([Case(Deposit(src.party, src.party, src.currency, src.amount),
+                        continuation)],
+                timeout,
+                Close);
+    }
+
+    const makePayment = function(src : SwapParty, dest : SwapParty,
+                                continuation : Contract) : Contract
+    {
+    return Pay(src.party, Party(dest.party), src.currency, src.amount,
+                continuation);
+    }
+
+    const contract : Contract = makeDeposit(alice, 10n,
+                                makeDeposit(bob, 20n,
+                                    makePayment(alice, bob,
+                                        makePayment(bob, alice,
+                                            Close))))
+
+    return contract;
+
+})

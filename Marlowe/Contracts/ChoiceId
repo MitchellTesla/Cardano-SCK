@@ -1,0 +1,6 @@
+(alias) type ChoiceId = {
+    "choice_name": string;
+    "choice_owner": Party;
+}
+(alias) const ChoiceId: (choiceName: string, choiceOwner: Party) => ChoiceId
+import ChoiceId

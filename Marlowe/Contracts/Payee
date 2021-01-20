@@ -1,0 +1,6 @@
+(alias) type Payee = {
+    "account": Party;
+} | {
+    "party": Party;
+}
+import Payee

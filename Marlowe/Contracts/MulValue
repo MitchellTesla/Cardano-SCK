@@ -1,0 +1,2 @@
+(alias) const MulValue: (lhs: EValue, rhs: EValue) => Value
+import MulValue

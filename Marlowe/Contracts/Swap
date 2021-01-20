@@ -1,0 +1,26 @@
+When [
+  (Case
+     (Deposit
+        (Role "party1")
+        (Role "party1")
+        (Token "" "")
+        (Constant 500))
+     (When [
+        (Case
+           (Deposit
+              (Role "party2")
+              (Role "party2")
+              (Token "" "")
+              (Constant 300))
+           (Pay
+              (Role "party1")
+              (Party
+                 (Role "party2"))
+              (Token "" "")
+              (Constant 500)
+              (Pay
+                 (Role "party2")
+                 (Party
+                    (Role "party1"))
+                 (Token "" "")
+                 (Constant 300) Close)))] 20 Close))] 15 Close

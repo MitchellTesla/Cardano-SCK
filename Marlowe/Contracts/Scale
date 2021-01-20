@@ -1,0 +1,2 @@
+(alias) const Scale: (num: SomeNumber, den: SomeNumber, val: EValue) => Value
+import Scale

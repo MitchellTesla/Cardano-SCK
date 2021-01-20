@@ -1,0 +1,26 @@
+When [
+  (Case
+     (Deposit
+        (Role "investor")
+        (Role "investor")
+        (Token "" "")
+        (Constant 850))
+     (Pay
+        (Role "investor")
+        (Party
+           (Role "issuer"))
+        (Token "" "")
+        (Constant 850)
+        (When [
+           (Case
+              (Deposit
+                 (Role "investor")
+                 (Role "issuer")
+                 (Token "" "")
+                 (Constant 1000))
+              (Pay
+                 (Role "investor")
+                 (Party
+                    (Role "investor"))
+                 (Token "" "")
+                 (Constant 1000) Close))] 20 Close)))] 10 Close

@@ -1,0 +1,88 @@
+
+    /* Parties */
+    const alice : Party = Role("alice");
+    const bob : Party = Role("bob");
+    const carol : Party = Role("carol");
+
+    /* Value under escrow */
+    const price : SomeNumber = 450n;
+
+    /* helper function to build Actions */
+
+    const choiceName : string = "choice";
+
+    const choiceIdBy = function (party : Party) : ChoiceId {
+                        return ChoiceId(choiceName, party);
+                    }
+
+    const choiceBy = function(party : Party, bounds : [Bound]) : Action {
+                        return Choice(choiceIdBy(party), bounds);
+                    };
+
+
+    const choiceValueBy = function(party : Party) : Value {
+                            return ChoiceValue(choiceIdBy(party));
+                        };
+
+    /* Names for choices */
+
+    const pay : [Bound]    = [Bound(0n, 0n)];
+    const refund : [Bound] = [Bound(1n, 1n)];
+    const both : [Bound]   = [Bound(0n, 1n)];
+
+    /* Name choices according to person making choice and choice made */
+
+    const alicePay : Action    = choiceBy(alice, pay);
+    const aliceRefund : Action = choiceBy(alice, refund);
+    const aliceChoice : Action = choiceBy(alice, both);
+
+    const bobPay : Action    = choiceBy(bob, pay);
+    const bobRefund : Action = choiceBy(bob, refund);
+    const bobChoice : Action = choiceBy(bob, both);
+
+    const carolPay : Action    = choiceBy(carol, pay);
+    const carolRefund : Action = choiceBy(carol, refund);
+    const carolChoice : Action = choiceBy(carol, both);
+
+    /* the values chosen in choices */
+
+    const aliceChosen : Value = choiceValueBy(alice);
+    const bobChosen : Value = choiceValueBy(bob);
+
+    /* The contract to follow when Alice and Bob disagree, or if
+    Carol has to intervene after a single choice from Alice or Bob. */
+
+    const arbitrate : Contract = When([Case(carolRefund, Close),
+                                    Case(carolPay, Pay(alice, Party(bob), ada, price, Close))],
+                                    100n, Close);
+
+    /* The contract to follow when Alice and Bob have made the same choice. */
+
+    const agreement : Contract = If(ValueEQ(aliceChosen, 0n),
+                                    Pay(alice, Party(bob), ada, price, Close),
+                                    Close);
+
+    /* Inner part of contract */
+
+    const inner : Contract = When([Case(aliceChoice,
+                            When([Case(bobChoice,
+                                        If(ValueEQ(aliceChosen, bobChosen),
+                                            agreement,
+                                            arbitrate))],
+                                    60n, arbitrate))],
+                            40n, Close);
+
+    /* What does the vanilla contract look like?
+    - if Alice and Bob choose
+        - and agree: do it
+        - and disagree: Carol decides
+    - Carol also decides if timeout after one choice has been made;
+    - refund if no choices are made. */
+
+    const contract : Contract = When([Case(Deposit(alice, alice, ada, price), inner)],
+                                    10n,
+                                    Close)
+
+    return contract;
+
+})

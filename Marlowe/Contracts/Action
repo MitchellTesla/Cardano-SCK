@@ -1,0 +1,12 @@
+(alias) type Action = {
+    "party": Party;
+    "deposits": Value;
+    "of_token": Token;
+    "into_account": Party;
+} | {
+    "choose_between": Bound[];
+    "for_choice": ChoiceId;
+} | {
+    "notify_if": Observation;
+}
+import Action

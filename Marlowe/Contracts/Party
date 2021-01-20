@@ -1,0 +1,7 @@
+(alias) function Party(party: Party): Payee
+(alias) type Party = {
+    "pk_hash": string;
+} | {
+    "role_token": string;
+}
+import Party

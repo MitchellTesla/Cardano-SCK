@@ -1,0 +1,2 @@
+(alias) const OrObs: (lhs: Observation, rhs: Observation) => Observation
+import OrObs

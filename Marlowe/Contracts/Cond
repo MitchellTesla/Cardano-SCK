@@ -1,0 +1,2 @@
+(alias) const Cond: (obs: Observation, contThen: EValue, contElse: EValue) => Value
+import Cond

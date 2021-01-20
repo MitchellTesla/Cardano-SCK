@@ -1,0 +1,2 @@
+(alias) const Constant: (number: SomeNumber) => Value
+import Constant
