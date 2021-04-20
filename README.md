@@ -1,8 +1,7 @@
 # Cardano
 This repository is for testing and development of solidity smart-contracts on the Cardano KEVM and Blockchain.
 
-This repo also includes a Cardano Node.
-
+It includes a Cardano Node.
 The core component used to participate in the Cardano decentralized blockchain.
 This is an experimental repository under active research and development. Notice: (Some Missing files) 
 Not currently Fully-Functional and a work in progress.
