@@ -8,7 +8,7 @@ It includes a Modular Toolbox in Rust & Cardano Full-Node.(README.rst)
 The Full-Node is a core component used to participate in the Cardano decentralized blockchain.  
 
 Notice:
-This is an experimental repository under active research and development and Updates frequently. 
+Experimental repository under active research & development which may update frequently. 
 (Some files may be missing) work in progress.
 
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
