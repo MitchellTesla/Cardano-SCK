@@ -1,11 +1,10 @@
 # Smart-Contract Research & Development
-This repository is for research and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
-It includes a Modular Toolbox in Rust & Cardano Full-Node.(README.rst)
+This repository is for research and development of solidity smart-contracts on the Cardano KEVM and Blockchain.
+It includes a Modular Toolbox in Rust & Cardano Full-Node. (README.rst) The Full-Node is a core component used to participate in the Cardano decentralized blockchain. 
+
 <p align="center">
   <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
 </p>
-
-The Full-Node is a core component used to participate in the Cardano decentralized blockchain.  
 
 Notice:
 Experimental repository under active research & development which may update frequently. 
