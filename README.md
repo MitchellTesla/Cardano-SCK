@@ -1,5 +1,5 @@
 # Cardano
-This repository is for testing and development of solidity smart-contracts on the Cardano KEVM and Blockchain.
+This repository is for testing and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
 
 It includes a Cardano Node.(README.rst)
 
