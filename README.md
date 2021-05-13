@@ -8,7 +8,7 @@ The repository includes a Modular Toolbox in Rust & Cardano Full-Node. (README.r
 
 Notice:
 Experimental repository under active research & development which may update frequently. 
-(Some files may be missing) work in progress.
+(Some files may be missing or hidden) work in progress.
 
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
 
