@@ -1,11 +1,9 @@
 # Smart-Contract Research & Development
-Smart-ContractKits
-
 This repository is for research and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
 <p align="center">
   <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
 </p>
-It includes a Cardano Node.(README.rst)
+It includes a Modular Toolbox in Rust & Cardano Full-Node.(README.rst)
 
 Which is a core component used to participate in the Cardano decentralized blockchain.
 This is an experimental repository under active research and development for the KEVM. Notice: (Some Missing files and repos) 
