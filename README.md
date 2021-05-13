@@ -6,6 +6,10 @@ The core component used to participate in the Cardano decentralized blockchain.
 This is an experimental repository under active research and development. Notice: (Some Missing files) 
 Not currently Fully-Functional and a work in progress.
 
+<p align="center">
+  <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
+</p>
+
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
 
 Without going too deep into the technicalities of it, the EUTXO model essentially allows the validity of transactions to be checked off-chain before the transaction is sent to the blockchain. This is in contrast to Ethereum Layer 1 which processes transactions all on-chain. Transaction execution costs can be also determined off-chain before transmission which is another unique feature.
