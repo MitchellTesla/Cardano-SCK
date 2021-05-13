@@ -1,7 +1,7 @@
-# Cardano - Smart-Contract Research and Development
-Smart-ContractKit
+# Smart-Contract Research & Development
+Smart-ContractKits
 
-This repository is for testing and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
+This repository is for research and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
 <p align="center">
   <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
 </p>
