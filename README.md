@@ -1,4 +1,4 @@
-# Cardano
+# Cardano - Smart-Contract Research and Development
 Smart-ContractKit
 
 This repository is for testing and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
