@@ -1,15 +1,13 @@
 # Cardano
 This repository is for testing and development of solidity smart-contracts for the Cardano KEVM and Blockchain.
-
+<p align="center">
+  <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
+</p>
 It includes a Cardano Node.(README.rst)
 
 The core component used to participate in the Cardano decentralized blockchain.
 This is an experimental repository under active research and development for the KEVM. Notice: (Some Missing files and repos) 
 (WIP) work in progress.
-
-<p align="center">
-  <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
-</p>
 
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
 
