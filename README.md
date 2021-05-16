@@ -44,7 +44,7 @@ You can download the latest version of cardano-node and cardano-cli here.
 
 Windows Executable
 
-#  Instructions
+#  Configuration-Instructions
 
 The download includes cardano-node.exe and a .dll. To run the node with cardano-node run you need to reference a few files and directories as arguments. These can be copied from the cardano-node repo into the executables directory. The command to run the node on mainnet looks like this:
 
