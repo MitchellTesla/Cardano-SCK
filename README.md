@@ -1,6 +1,7 @@
 # Smart-Contract Research & Development
+
  <p align="center">
-  <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
+  <img src="Cardano_mitchelltesla_main_logo.gif" alt="demo" />
 </p>
 
 # Notice
@@ -530,3 +531,5 @@ Apache License
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+   
