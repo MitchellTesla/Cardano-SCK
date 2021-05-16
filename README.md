@@ -1,15 +1,16 @@
 # Smart-Contract Research & Development
 Research and Development of Solidity smart-contracts on the Cardano KEVM and Blockchain.
-The repository includes a Modular Toolbox in Rust & Cardano Full-Node (README.rst) The Full-Node is a core component used to participate in the Cardano decentralized blockchain. 
+The repository includes Rust-Cardano (Modular Toolbox), and a Cardano Full-Node (README.rst) Which is a core component used to participate in the Cardano decentralized blockchain. 
 
 <p align="center">
   <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
 </p>
 
-Notice:
-Experimental repository under active research & development which may update frequently. 
-(Some files may be missing or hidden) work in progress.
+# Notice
+Experimental repository under active research & development, may update frequently. 
+(Some files may be missing or hidden) consider a work in progress.
 
+# Brief Description
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
 
 Without going too deep into the technicalities of it, the EUTXO model essentially allows the validity of transactions to be checked off-chain before the transaction is sent to the blockchain. This is in contrast to Ethereum Layer 1 which processes transactions all on-chain. Transaction execution costs can be also determined off-chain before transmission which is another unique feature.
@@ -18,7 +19,7 @@ Plutus Core will be used to define the parameters of these EUTXO transactions an
 
 Cardano launched native tokens on March 1st,2021 ‘Mary’ upgrade to allow users to create uniquely defined custom tokens and carry out transactions with them. Plutus will expand on current token capabilities, vastly improving minting policies which will be beneficial for NFTs which may need time locks.
 
-Cardano Alonzo Upgrade in Q3*
+# Cardano Alonzo Upgrade in Q3*
 Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadmap which introduces smart contracts and the ability to build dapps. In an earlier blog post, the team hinted at a timeline:
 
 “May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer,”
@@ -34,7 +35,7 @@ The cardano-node is the top level for the node and aggregates the other componen
 The node no longer incorporates wallet or explorer functionality. The wallet backend and explorer backend are separate components that run in separate external processes that communicate with the node via local IPC.
 
 # Network Configuration, Genesis and Topology Files
-The latest supported networks can be found at https://hydra.iohk.io/job/Cardano/cardano-node/cardano-deployment/latest-finished/download/1/index.html
+The latest supported networks can be found at [https://hydra.iohk.io/job/Cardano/cardano-node/cardano-deployment/latest-finished/download/1/index.html]
 
 How to build
 Documentation for building the node can be found here.
@@ -145,7 +146,7 @@ More details on the Byron Genesis JSON file can be found in docs/reference/byron
 
 Byron genesis delegation and related concepts are described in detail in:
 
-https://hydra.iohk.io/job/Cardano/cardano-ledger-specs/byronLedgerSpec/latest/download-by-type/doc-pdf/ledger-spec
+[https://hydra.iohk.io/job/Cardano/cardano-ledger-specs/byronLedgerSpec/latest/download-by-type/doc-pdf/ledger-spec]
 The canned scripts/benchmarking/genesis.sh example provides a nice set of defaults and illustrates available options.
 
 Key operations
@@ -315,11 +316,18 @@ The API documentation is published here.
 The documentation is built with each push, but is only published from master branch. In order to test if the documentation is working, build the documentation locally with ./scripts/haddocs.sh and open haddocks/index.html in the browser.
 
 
+#  daedalus.io 
+<p align="center">
+  <img src="daedalus-wallet.gif" alt="demo" />
+</p>
+
+[http://daedaluswallet.io]
+
 # LICENSE
 
 Apache License
                            Version 2.0, January 2004
-                        http://www.apache.org/licenses/
+                        [http://www.apache.org/licenses/]
 
    TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
 
@@ -511,7 +519,7 @@ Apache License
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+       [http://www.apache.org/licenses/LICENSE-2.0]
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
