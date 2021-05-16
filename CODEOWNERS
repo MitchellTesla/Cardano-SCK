@@ -5,6 +5,11 @@
 # Specific reviewers for code pieces
 # NB - The last matching pattern takes precedence
 
+# Repository owner
+#                       Justin
+*                       @mitchell_tesla
+                
+
 # /doc folder and README.* needs to be owned by @docs-access
 doc                          @docs-access
 README.*                     @docs-access

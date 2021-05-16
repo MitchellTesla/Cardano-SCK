@@ -28,7 +28,7 @@ Following the Mainnet release of the Mary (hard fork) on March 1, 2021.
   <img src="daedalus-testnet.gif" alt="demo" />
 </p>
 
-# Cardano Full-Node Integration
+# Cardano Full-Node Integration  (README.rst)
 
 Integration of the ledger, consensus, networking and node shell repositories.
 
@@ -49,7 +49,7 @@ You can download the latest version of cardano-node and cardano-cli here.
 
 Windows Executable
 
-#  Configuration/Instructions
+#  Instructions
 
 The download includes cardano-node.exe and a .dll. To run the node with cardano-node run you need to reference a few files and directories as arguments. These can be copied from the cardano-node repo into the executables directory. The command to run the node on mainnet looks like this:
 
