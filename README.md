@@ -326,13 +326,13 @@ The documentation is built with each push, but is only published from master bra
 #  daedalus.io 
 
 <p align="center">
-  <img src="daedalus-wallet.gif" alt="demo" />
+  <img src="daedaluswallet-android_support.jpg" alt="demo" />
 </p>
 
 [http://daedaluswallet.io]
 
 <p align="center">
-  <img src="daedaluswallet-android_support.jpg" alt="demo" />
+  <img src="daedalus-wallet.gif" alt="demo" />
 </p>
 
 # LICENSE
