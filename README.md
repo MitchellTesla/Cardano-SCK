@@ -17,11 +17,10 @@ Cardano launched native tokens on March 1st,2021 ‘Mary’ upgrade to allow use
 Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadmap which introduces smart contracts and the ability to build dapps. In an earlier blog post, the team hinted at a timeline:
 
 <p align="center">
-  <img src="Cardano_mitchelltesla_main_logo.gif" alt="demo" />
+  <img src="daedalus-testnet.gif" alt="demo" />
 </p>
 
-“May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer 2021,”
-Following the Mainnet release of the Mary (hard fork) on March 1, 2021.
+“May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer 2021,” - Mitchell.  Following the Mainnet release of the Mary (hard fork) on March 1, 2021. 
 
 # Important Notice
 
@@ -29,7 +28,7 @@ Experimental repository under active research & development, may update frequent
 (Some files may be missing or hidden) consider work in progress.
 
 <p align="center">
-  <img src="daedalus-testnet.gif" alt="demo" />
+  <img src="Cardano_mitchelltesla_main_logo.gif" alt="demo" />
 </p>
 
 # Cardano Full-Node Integration  (README.rst)
