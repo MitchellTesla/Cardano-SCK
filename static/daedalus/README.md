@@ -1,3 +1,3 @@
 <p align="center">
-  <img src="daedalus-wallet.gif" alt="demo" />
+  <img src="daedalus-playstore-android.jpg" alt="demo" />
 </p>
