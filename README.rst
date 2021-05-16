@@ -1,4 +1,4 @@
-# Cardano Full-Node
+The Cardano Full-Node*
 
 Integration of the ledger, consensus, networking and node shell repositories.
 
@@ -58,6 +58,7 @@ The --config flag points to a .yaml file that is responsible to configuring the 
 
 # Protocol: RealPBFT -- Protocol the node will execute
 RequiresNetworkMagic: RequiresNoMagic -- Used to distinguish between mainnet (RequiresNoMagic) and testnets (RequiresMagic)
+
 Logging
 Logs are output to the logs/ dir.
 
