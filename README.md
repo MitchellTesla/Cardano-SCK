@@ -4,11 +4,6 @@
   <img src="Cardano_mitchelltesla_main_logo.gif" alt="demo" />
 </p>
 
-# Important Notice
-
-Experimental repository under active research & development, may update frequently. 
-(Some files may be missing or hidden) consider work in progress.
-
 # Description
 Research and Development of Solidity smart-contracts on the Cardano KEVM and Blockchain.
 The repository includes Rust-Cardano (Modular Toolbox), and a Cardano Full-Node (README.rst) Which is a core component used to participate in the Cardano decentralized blockchain. Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
@@ -28,6 +23,11 @@ Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadm
 
 “May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer 2021,”
 Following the Mainnet release of the Mary (hard fork) on March 1, 2021.
+
+# Important Notice
+
+Experimental repository under active research & development, may update frequently. 
+(Some files may be missing or hidden) consider work in progress.
 
 <p align="center">
   <img src="daedalus-testnet.gif" alt="demo" />
