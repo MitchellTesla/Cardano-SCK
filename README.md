@@ -188,7 +188,8 @@ VerKey address with root e5a3807d99a1807c3f161a1558bcbc45de8392e049682df01809c48
 
 #  Transactions
 
-Creation
+# Creation
+
 Transactions can be created via the issue-genesis-utxo-expenditure & issue-utxo-expenditure commands.
 
 The easiest way to create a transaction is via the scripts/benchmarking/issue-genesis-utxo-expenditure.sh script as follows:
