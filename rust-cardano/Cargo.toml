@@ -1,0 +1,13 @@
+[workspace]
+members = [
+    "chain-core",
+    "cardano",
+    "network-core",
+    "network-ntt",
+    "protocol",
+    "protocol-tokio",
+    "storage-units",
+    "storage",
+    "cardano-c",
+    "exe-common",
+]

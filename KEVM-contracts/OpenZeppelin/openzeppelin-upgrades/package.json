@@ -1,0 +1,37 @@
+{
+  "name": "openzeppelin-upgrades",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "docs": "oz-docs",
+    "docs:watch": "oz-docs watch",
+    "prepare": "wsrun -ms prepare:contracts && tsc -b",
+    "lint": "yarn lint:path .",
+    "lint:path": "eslint --ignore-path .gitignore --max-warnings 0",
+    "test": "tsc -b && wsrun -ms test",
+    "coverage": "nyc yarn test"
+  },
+  "devDependencies": {
+    "@openzeppelin/docs-utils": "^0.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "^7.4.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-unicorn": "^31.0.0",
+    "ethers": "^5.0.5",
+    "lerna": "^4.0.0",
+    "node-gyp-cache": "^0.2.1",
+    "nyc": "^15.1.0",
+    "prettier": "^2.0.5",
+    "typescript": "^4.0.0",
+    "wsrun": "^5.2.4"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*",
+      "packages/plugin-truffle/test",
+      "examples/*"
+    ]
+  }
+}
