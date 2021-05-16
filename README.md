@@ -23,13 +23,14 @@ Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadm
 
 “May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer,”
 
-The Cardano Full-Node*
+#  The Cardano Full-Node*
 
 Integration of the ledger, consensus, networking and node shell repositories.
 
 Logging is provided as a feature by the node shell to the other packages.
 
 The cardano-node is the top level for the node and aggregates the other components from other packages: consensus, ledger and networking, with configuration, CLI, logging and monitoring.
+
 The node no longer incorporates wallet or explorer functionality. The wallet backend and explorer backend are separate components that run in separate external processes that communicate with the node via local IPC.
 
 # Network Configuration, Genesis and Topology Files
@@ -78,7 +79,7 @@ Usage: cardano-node run [--topology FILEPATH] [--database-path FILEPATH]
 --config - Specify the filepath to the config .yaml file. This file is responsible for all the other node's required settings. See examples in configuration (e.g. config-0.yaml).
 --validate-db - Flag to revalidate all on-disk database files
 
-Configuration .yaml files
+# Configuration .yaml files
 The --config flag points to a .yaml file that is responsible to configuring the logging & other important settings for the node. E.g. see the Byron mainnet configuration in this configuration.yaml. Some of the more important settings are as follows:
 
 # Protocol: RealPBFT -- Protocol the node will execute
@@ -87,7 +88,7 @@ RequiresNetworkMagic: RequiresNoMagic -- Used to distinguish between mainnet (Re
 Logging
 Logs are output to the logs/ dir.
 
-Profiling & statistics
+# Profiling & statistics
 Profiling data and RTS run stats are stored in the profile/ dir.
 
 Please see scripts/README.md for how to obtain profiling information using the scripts.
@@ -155,7 +156,7 @@ Signing keys can be generated using the keygen subcommand.
 
 Extracting a verification key out of the signing key is performed by the to-verification subcommand.
 
-Delegate key migration
+# Delegate key migration
 In order to continue using a delegate key from the Byron Legacy era in the new implementation, it needs to be migrated over, which is done by the migrate-delegate-key-from subcommand:
 
 $ cabal v2-run -- cardano-cli byron key migrate-delegate-key-from
@@ -173,7 +174,7 @@ $ cabal v2-run -- cardano-cli signing-key-address --byron-formats --secret key0.
 2cWKMJemoBakxhXgZSsMteLP9TUvz7owHyEYbUDwKRLsw2UGDrG93gPqmpv1D9ohWNddx
 VerKey address with root e5a3807d99a1807c3f161a1558bcbc45de8392e049682df01809c488, attributes: AddrAttributes { derivation path: {} }
 
-Transactions
+#  Transactions
 
 Creation
 Transactions can be created via the issue-genesis-utxo-expenditure & issue-utxo-expenditure commands.
@@ -204,7 +205,7 @@ The script requires the target file name to write the transaction to, input TxId
 
 The target address defaults to the 1-st richman key (configuration/delegate-keys.001.key) of the testnet, and lovelace amount is almost the entirety of its funds.
 
-Local node queries
+# Local node queries
 You can query the tip of your local node via the get-tip command as follows
 
 Open tmux
@@ -243,7 +244,7 @@ You can also check your proposal's validity using the validate-cbor command. See
 
 See the Byron specification for more details on update proposals.
 
-Update proposal submission
+# Update proposal submission
 You can submit your proposal using the submit-update-proposal command.
 
 Example:
@@ -287,19 +288,20 @@ Developers on cardano-node can launch their own testnets or run the chairman tes
 Chairman tests
 Debugging
 Pretty printing CBOR encoded files
+
 It may be useful to print the on chain representations of blocks, delegation certificates, txs and update proposals. There are two commands that do this (for any cbor encoded file):
 
 To pretty print as CBOR: cabal exec cardano-cli -- pretty-print-cbor --filepath CBOREncodedFile
 
-Validate CBOR files
+# Validate CBOR files
 You can validate Byron era blocks, delegation certificates, txs and update proposals with the validate-cbor command.
 
 cabal exec cardano-cli -- validate-cbor --byron-block 21600 --filepath CBOREncodedByronBlockFile
 
-Native Token Pre-Production Environment
+# Native Token Pre-Production Environment
 Thanks for your interest in building native tokens on Cardano. To help you get started we have compiled a handy list of resources:
 
-Cardano Forum discussion forum
+# Cardano Forum discussion forum
 
 # Developer Documentation for Native Tokens
 
