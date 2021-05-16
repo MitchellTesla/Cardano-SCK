@@ -156,14 +156,16 @@ More details on the Byron Genesis JSON file can be found in docs/reference/byron
 Byron genesis delegation and related concepts are described in detail in:
 
 [https://hydra.iohk.io/job/Cardano/cardano-ledger-specs/byronLedgerSpec/latest/download-by-type/doc-pdf/ledger-spec]
+
 The canned scripts/benchmarking/genesis.sh example provides a nice set of defaults and illustrates available options.
 
-Key operations
+# Key operations
+
 Note that key operations do not support password-protected keys.
 
-Signing key generation & verification key extraction
-Signing keys can be generated using the keygen subcommand.
+# Signing key generation & verification key extraction
 
+Signing keys can be generated using the keygen subcommand.
 Extracting a verification key out of the signing key is performed by the to-verification subcommand.
 
 # Delegate key migration
@@ -197,12 +199,14 @@ NB: This by default creates a transaction based on configuration/defaults/livevi
 
 If you do not have a genesis_file you can run scripts/benchmarking/genesis.sh which will create an example genesis_file for you. The script scripts/benchmarking/issue-genesis-utxo-expenditure.sh has defaults for all the requirements of the issue-genesis-utxo-expenditure command.
 
-Submission
+# Submission
+
 The submit-tx subcommand provides the option of submitting a pre-signed transaction, in its raw wire format (see GenTx for Byron transactions).
 
 The canned scripts/benchmarking/submit-tx.sh script will submit the supplied transaction to a testnet launched by scripts/benchmarking/shelley-testnet-liveview.sh script.
 
-Issuing UTxO expenditure (genesis and regular)
+# Issuing UTxO expenditure (genesis and regular)
+
 To make a transaction spending UTxO, you can either use the:
 
 issue-genesis-utxo-expenditure, for genesis UTxO
