@@ -52,7 +52,7 @@ Documentation for building the node can be found here.
 Linux Executable
 You can download the latest version of cardano-node and cardano-cli here.
 
-Windows Executable
+Also Windows Executable
 
 #  Instructions
 
