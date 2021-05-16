@@ -23,6 +23,10 @@ Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadm
 
 “May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer,”
 
+<p align="center">
+  <img src="daedalus-testnet.gif" alt="demo" />
+</p>
+
 # Cardano Full-Node Integration
 
 Integration of the ledger, consensus, networking and node shell repositories.
