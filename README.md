@@ -28,7 +28,7 @@ Following the Mainnet release of the Mary (hard fork) on March 1, 2021.
   <img src="daedalus-testnet.gif" alt="demo" />
 </p>
 
-# Cardano Full-Node Integration
+# Cardano Full-Node Integration  (README.rst)
 
 Integration of the ledger, consensus, networking and node shell repositories.
 
