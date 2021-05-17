@@ -4,8 +4,8 @@
 </p> 
 
 # Description
-Research and Development of Solidity smart-contracts for the Cardano KEVM and Blockchain.
-This repository includes Rust-Cardano (Modular Toolbox), and a Cardano Full-Node (README.rst) Which is a core component used to participate in the Cardano decentralized blockchain. 
+Research and Development (WIP) of Solidity smart-contracts for the Cardano KEVM and Blockchain.
+This repository includes Rust-Cardano (Modular Toolbox), a jormungandr implementation in development, daedalus, and a Cardano Full-Node (README.rst) Which is the core component used to participate in the Cardano decentralized blockchain. 
 
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
 
