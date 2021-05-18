@@ -35,7 +35,7 @@ ADDRTYPE="--testing"
 
 CONSENSUS="genesis_praos"
 SECRET_PATH="secret"
-CONFIG_PATH="."
+CONFIG_PATH="config"
 ADD_STARTUP_SCRIPT=0
 
 check_program_in_path () {
