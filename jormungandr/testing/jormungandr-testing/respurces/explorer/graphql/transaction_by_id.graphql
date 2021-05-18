@@ -1,5 +1,0 @@
-query TransactionById($id: String!){
-    transaction(id: $id) {
-        id
-    }
-}
