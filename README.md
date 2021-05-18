@@ -4,8 +4,8 @@
 </p> 
 
 # Description
-Research and Development of Solidity smart-contracts for the Cardano KEVM and Blockchain.
-This repository includes Rust-Cardano (Modular Toolbox), and a Cardano Full-Node (README.rst) Which is a core component used to participate in the Cardano decentralized blockchain. 
+Research and Development (WIP) of Solidity smart-contracts for the Cardano KEVM and Blockchain.
+This repository includes Rust-Cardano (Modular Toolbox), a jormungandr implementation in development, a static daedaluswallet, and a Cardano Full-Node (README.rst) Which is the core component used to participate in the Cardano decentralized blockchain. 
 
 Just like Bitcoin, Cardano uses the UTXO (unspent transaction output) model where the inputs are unspent outputs from previous transactions. However, the network has expanded upon this to employ an extended UTXO model (EUTXO) which offers unique advantages over other accounting models.
 
@@ -22,9 +22,9 @@ Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadm
   <img src="daedalus-testnet.gif" alt="demo" />
 </p>
 
-“May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer 2021,” - Mitchell.  Following the Mainnet release of the Mary (hard fork) on March 1, 2021. 
+“May and June will be a time for quality assurance and testing with users, which will be followed by a feature freeze lasting for four weeks. This will provide crypto exchanges and wallets with the time to upgrade and prepare for the Alonzo protocol update. We expect the Alonzo upgrade (hard fork) to happen in late summer 2021,  Following the Mainnet release of 'Mary' on March 1, 2021."  -Mitchell
 
-# Important Notice
+# Important Notice *
 
 Experimental repository under active research & development, may update frequently. 
 (Some files may be missing or hidden) consider work in progress.
@@ -52,7 +52,7 @@ Documentation for building the node can be found here.
 Linux Executable
 You can download the latest version of cardano-node and cardano-cli here.
 
-Windows Executable
+Also Windows Executable
 
 #  Instructions
 
@@ -156,14 +156,16 @@ More details on the Byron Genesis JSON file can be found in docs/reference/byron
 Byron genesis delegation and related concepts are described in detail in:
 
 [https://hydra.iohk.io/job/Cardano/cardano-ledger-specs/byronLedgerSpec/latest/download-by-type/doc-pdf/ledger-spec]
+
 The canned scripts/benchmarking/genesis.sh example provides a nice set of defaults and illustrates available options.
 
-Key operations
+# Key operations
+
 Note that key operations do not support password-protected keys.
 
-Signing key generation & verification key extraction
-Signing keys can be generated using the keygen subcommand.
+# Signing key generation & verification key extraction
 
+Signing keys can be generated using the keygen subcommand.
 Extracting a verification key out of the signing key is performed by the to-verification subcommand.
 
 # Delegate key migration
@@ -186,7 +188,8 @@ VerKey address with root e5a3807d99a1807c3f161a1558bcbc45de8392e049682df01809c48
 
 #  Transactions
 
-Creation
+# Creation
+
 Transactions can be created via the issue-genesis-utxo-expenditure & issue-utxo-expenditure commands.
 
 The easiest way to create a transaction is via the scripts/benchmarking/issue-genesis-utxo-expenditure.sh script as follows:
@@ -197,12 +200,14 @@ NB: This by default creates a transaction based on configuration/defaults/livevi
 
 If you do not have a genesis_file you can run scripts/benchmarking/genesis.sh which will create an example genesis_file for you. The script scripts/benchmarking/issue-genesis-utxo-expenditure.sh has defaults for all the requirements of the issue-genesis-utxo-expenditure command.
 
-Submission
+# Submission
+
 The submit-tx subcommand provides the option of submitting a pre-signed transaction, in its raw wire format (see GenTx for Byron transactions).
 
 The canned scripts/benchmarking/submit-tx.sh script will submit the supplied transaction to a testnet launched by scripts/benchmarking/shelley-testnet-liveview.sh script.
 
-Issuing UTxO expenditure (genesis and regular)
+# Issuing UTxO expenditure (genesis and regular)
+
 To make a transaction spending UTxO, you can either use the:
 
 issue-genesis-utxo-expenditure, for genesis UTxO

@@ -1,0 +1,12 @@
+[workspace]
+members = [
+  "jormungandr-lib",
+  "jormungandr",
+  "jcli",
+  "modules/settings",
+  "modules/blockchain",
+  "testing/jormungandr-testing-utils",
+  "testing/jormungandr-integration-tests",
+  "testing/jormungandr-scenario-tests",
+  "testing/mjolnir",
+]
