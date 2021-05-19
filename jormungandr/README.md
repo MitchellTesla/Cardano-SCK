@@ -3,6 +3,10 @@
 > Just because you call something a blockchain, that doesn't mean you aren't
 > subject to normal engineering laws.
 
+<p align="center">
+  <img src="jormungandr-XENsmite_4kwallpaper.png" alt="demo" />
+</p>
+
 User guide documentation available [here][docs]
 
 [docs]: https://input-output-hk.github.io/jormungandr
