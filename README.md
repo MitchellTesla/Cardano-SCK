@@ -5,7 +5,7 @@
   <img src="Cardanowallpaper4k_mTesla.jpg" alt="demo" />
 </p> 
 
-# Description
+# Introduction
 Research and Development (WIP) of Solidity smart-contracts for the Cardano KEVM and Blockchain.
 This repository includes Rust-Cardano (Modular Toolbox), a jormungandr implementation in development, a static daedaluswallet, and a Cardano Full-Node (README.rst) Which is the core component used to participate in the Cardano decentralized blockchain. 
 
