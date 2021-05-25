@@ -1,4 +1,4 @@
-# Full Node
+# XEN Full-Node
 
 > Just because you call something a blockchain, that doesn't mean you aren't
 > subject to normal engineering laws.
