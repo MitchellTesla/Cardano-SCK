@@ -1,0 +1,1 @@
+pg_restore -d cexplorer -U postgres /docker-entrypoint-initdb.d/cexplorer.pg_dump
