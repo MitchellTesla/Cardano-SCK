@@ -1,0 +1,78 @@
+{
+  "name": "@cardano-graphql/api-cardano-db-hasura",
+  "version": "4.0.0",
+  "description": "Module for interfacing with the Cardano DB, populated by cardano-db-sync-extended that utilises Hasura for a powerful query interface",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "yarn codegen && tsc -b ./src",
+    "codegen": "graphql-codegen",
+    "cleanup": "shx rm -rf dist node_modules src/graphql_types.ts",
+    "lint": "eslint --ignore-path ../../.eslintignore \"**/*.ts\"",
+    "prepack": "yarn build",
+    "test": "yarn build && NODE_ENV=test jest -c ./test/jest.config.js query"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/input-output-hk/cardano-graphql.git"
+  },
+  "author": "Rhys Bartels-Waller",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/input-output-hk/cardano-graphql/issues"
+  },
+  "homepage": "https://github.com/input-output-hk/cardano-graphql/blob/master/packages/api-cardano-db-hasura/README.md",
+  "files": [
+    "dist/*",
+    "!dist/__test__",
+    "!dist/**/*.test.*",
+    "hasura",
+    "LICENSE",
+    "NOTICE",
+    "schema.graphql"
+  ],
+  "dependencies": {
+    "@cardano-graphql/util": "4.0.0",
+    "@cardano-ogmios/client": "^3.2.0",
+    "@emurgo/cardano-serialization-lib-nodejs": "^6.0.0",
+    "@emurgo/cip14-js": "^2.0.0",
+    "@graphql-tools/delegate": "^6.0.10",
+    "@graphql-tools/schema": "^6.0.9",
+    "@graphql-tools/wrap": "^6.0.9",
+    "apollo-boost": "^0.4.9",
+    "apollo-link": "^1.2.14",
+    "apollo-link-http": "^1.5.17",
+    "apollo-link-retry": "^2.2.16",
+    "apollo-server": "^2.15.1",
+    "axios": "^0.21.1",
+    "bignumber.js": "^9.0.1",
+    "cross-fetch": "^3.0.4",
+    "dayjs": "^1.8.29",
+    "fs-extra": "^9.1.0",
+    "graphql": "14.5.8",
+    "graphql-bigint": "^1.0.0",
+    "graphql-request": "^3.4.0",
+    "graphql-scalars": "^1.2.1",
+    "object-hash": "^2.1.1",
+    "p-retry": "^4.2.0",
+    "pg": "^8.5.1",
+    "pg-listen": "^1.6.0",
+    "set-interval-async": "^1.0.33",
+    "ts-custom-error": "^3.2.0",
+    "ts-log": "^2.2.3"
+  },
+  "devDependencies": {
+    "@cardano-graphql/util-dev": "4.0.0",
+    "@graphql-codegen/cli": "^1.15.2",
+    "@graphql-codegen/typescript": "^1.15.2",
+    "@graphql-codegen/typescript-graphql-files-modules": "^1.15.2",
+    "@graphql-codegen/typescript-resolvers": "^1.15.2",
+    "@types/node": "^14.0.13",
+    "@types/object-hash": "^1.3.4",
+    "@types/pg": "^7.14.4",
+    "@types/set-interval-async": "^1.0.0",
+    "@types/temp-write": "^4.0.0",
+    "shx": "^0.3.2",
+    "typescript": "^3.9.5"
+  }
+}
