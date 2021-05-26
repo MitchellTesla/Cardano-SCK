@@ -1,4 +1,7 @@
-# Smart-Contract Research & Development
+# <img src="icon.svg" alt="OpenZeppelin" height="40px" align="left"> OpenZeppelin Contracts Upgradeable
+
+[![Docs](https://img.shields.io/badge/docs-%F0%9F%93%84-blue)](https://docs.openzeppelin.com/contracts/upgradeable)
+[![NPM Package](https://img.shields.io/npm/v/@openzeppelin/contracts-upgradeable.svg)](https://www.npmjs.org/package/@openzeppelin/contracts-upgradeable)
 [![CodeQL](https://github.com/MitchellTesla/Cardano-SCK/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/MitchellTesla/Cardano-SCK/actions/workflows/codeql-analysis.yml)
 [![njsscan sarif](https://github.com/MitchellTesla/Cardano-SCK/actions/workflows/njsscan-analysis.yml/badge.svg)](https://github.com/MitchellTesla/Cardano-SCK/actions/workflows/njsscan-analysis.yml)
 <p align="center">
