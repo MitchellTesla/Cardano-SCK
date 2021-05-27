@@ -1,4 +1,4 @@
-# <img src="icon.svg" alt="OpenZeppelin" height="40px" align="left"> OpenZeppelin Contracts Upgradeable
+# Cardano-SCK
 
 [![Docs](https://img.shields.io/badge/docs-%F0%9F%93%84-blue)](https://docs.openzeppelin.com/contracts/upgradeable)
 [![NPM Package](https://img.shields.io/npm/v/@openzeppelin/contracts-upgradeable.svg)](https://www.npmjs.org/package/@openzeppelin/contracts-upgradeable)
@@ -346,6 +346,8 @@ The documentation is built with each push, but is only published from master bra
 <p align="center">
   <img src="daedalus-wallet.gif" alt="demo" />
 </p>
+
+# <img src="icon.svg" alt="OpenZeppelin" height="40px" align="left"> OpenZeppelin Contracts Upgradeable
 
 # LICENSE
 
