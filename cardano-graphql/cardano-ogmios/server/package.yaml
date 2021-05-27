@@ -1,0 +1,144 @@
+_config: !include ".hpack.config.yaml"
+
+name:                ogmios
+version:             3.2.0
+github:              "KtorZ/cardano-ogmios"
+license:             MPL-2.0
+author:              "KtorZ <matthias.benkort@gmail.com>"
+maintainer:          "matthias.benkort@gmail.com"
+copyright:           "2020-2021 KtorZ"
+description:         Please see the README on GitHub at <https://github.com/KtorZ/cardano-ogmios/tree/master/server#ogmios-server>
+synopsis:            A JSON-WSP WebSocket client for cardano-node
+category:            Web
+
+extra-source-files:
+- static/assets/logo.png
+- static/assets/favicon.ico
+- static/dashboard.html
+- static/dashboard.js
+- static/tests.html
+- static/tests/chain-sync.js
+- static/tests/state-query.js
+
+dependencies:
+- base >= 4.7 && < 5
+
+default-extensions: *default-extensions
+
+flags:
+  production:
+    description: Compile executables for production.
+    default: False
+    manual: True
+
+library:
+  source-dirs: src
+  ghc-options: *ghc-options-lib
+  when:
+    condition: flag(production)
+    ghc-options:
+    - -Werror
+    - -O2
+  dependencies:
+    - aeson
+    - base16
+    - base64
+    - base58-bytestring
+    - bech32
+    - bytestring
+    - cardano-api
+    - cardano-binary
+    - cardano-client
+    - cardano-crypto
+    - cardano-crypto-class
+    - cardano-crypto-wrapper
+    - cardano-ledger-alonzo
+    - cardano-ledger-byron
+    - cardano-ledger-core
+    - cardano-ledger-shelley-ma
+    - cardano-slotting
+    - cborg
+    - containers
+    - contra-tracer
+    - directory
+    - ekg-core
+    - fast-bech32
+    - file-embed
+    - generic-lens
+    - git-th
+    - http-types
+    - io-sim-classes
+    - iohk-monitoring
+    - iproute
+    - json-wsp
+    - json-via-show
+    - memory
+    - mtl
+    - optparse-applicative
+    - ouroboros-consensus
+    - ouroboros-consensus-byron
+    - ouroboros-consensus-cardano
+    - ouroboros-consensus-shelley
+    - ouroboros-network
+    - relude
+    - safe
+    - safe-exceptions
+    - scientific
+    - shelley-spec-ledger
+    - small-steps
+    - strict-containers
+    - text
+    - time
+    - time-manager
+    - typed-protocols
+    - vector
+    - wai
+    - wai-routes
+    - wai-websockets
+    - warp
+    - websockets
+  system-build-tools:
+  - git
+
+executables:
+  ogmios:
+    main: Main.hs
+    source-dirs: app
+    ghc-options: *ghc-options-executable
+    when:
+      condition: flag(production)
+      ghc-options:
+      - -O2
+      - -Werror
+      - '"-with-rtsopts=-A100m -T -N2"'
+    dependencies:
+    - ogmios
+
+tests:
+  unit:
+    main: Spec.hs
+    source-dirs: test/unit
+    ghc-options: *ghc-options-test
+    dependencies:
+    - aeson
+    - cardano-client
+    - cardano-ledger-core
+    - cardano-slotting
+    - generic-arbitrary
+    - hedgehog-quickcheck
+    - hspec
+    - hspec-json-schema
+    - json-wsp
+    - ogmios
+    - ouroboros-consensus
+    - ouroboros-consensus-byron
+    - ouroboros-consensus-cardano
+    - ouroboros-consensus-cardano-test
+    - ouroboros-consensus-shelley
+    - ouroboros-network
+    - QuickCheck
+    - relude
+    - shelley-spec-ledger
+    - shelley-spec-ledger-test
+    build-tools:
+    - hspec-discover
