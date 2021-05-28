@@ -1,0 +1,3808 @@
+{ "type": "object"
+, "title": "ogmios"
+, "$schema": "https://json-schema.org/draft-07/schema"
+, "required":
+  [ "RequestNext", "RequestNextResponse"
+  , "FindIntersect", "FindIntersectResponse"
+  , "SubmitTx", "SubmitTxResponse"
+  , "Acquire", "AcquireResponse"
+  , "Release","ReleaseResponse"
+  , "Query"
+  , "QueryResponse[currentEpoch]"
+  , "QueryResponse[currentProtocolParameters]"
+  , "QueryResponse[delegationsAndRewards]"
+  , "QueryResponse[eraStart]"
+  , "QueryResponse[genesisConfig]"
+  , "QueryResponse[ledgerTip]"
+  , "QueryResponse[nonMyopicMemberRewards]"
+  , "QueryResponse[proposedProtocolParameters]"
+  , "QueryResponse[stakeDistribution]"
+  , "QueryResponse[utxo]"
+  , "Fault"
+  ]
+, "properties":
+
+  { "RequestNext":
+    { "type": "object"
+    , "description": "Request next block from the current cardano-node's cursor."
+    , "required": [ "type", "version", "servicename", "methodname" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/request" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "RequestNext" ]
+        }
+      , "args":
+        { "type": "object"
+        , "additionalProperties": false
+        }
+      , "mirror":
+        { "description": "An arbitrary JSON value that will be mirrored back in the response."
+        }
+      }
+    }
+
+  , "RequestNextResponse":
+    { "type": "object"
+    , "description": "Request next block from the current cardano-node's cursor."
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "RequestNext" ]
+        }
+      , "result":
+        { "type": "object"
+        , "oneOf":
+          [ { "required": ["RollForward"]
+            , "title": "RollForward"
+            , "additionalProperties": false
+            , "properties":
+              { "RollForward":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": [ "tip", "block" ]
+                , "properties":
+                  { "block": { "$ref": "#/definitions/Block" }
+                  , "tip": { "$ref": "#/definitions/Tip" }
+                  }
+                }
+              }
+            }
+          , { "required": ["RollBackward"]
+            , "title": "RollBackward"
+            , "additionalProperties": false
+            , "properties":
+              { "RollBackward":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": [ "tip", "point" ]
+                , "properties":
+                  { "point": { "$ref": "#/definitions/Point" }
+                  , "tip": { "$ref": "#/definitions/Tip" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "FindIntersect":
+    { "type": "object"
+    , "description": "Ask cardano-node to find an intersection between its local chain and the given points."
+    , "required": [ "type", "version", "servicename", "methodname" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/request" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "FindIntersect" ]
+        }
+      , "args":
+        { "type": "object"
+        , "properties":
+          { "points":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/Point" }
+            }
+          }
+        }
+      , "mirror":
+        { "description": "An arbitrary JSON value that will be mirrored back in the response."
+        }
+      }
+    }
+
+  , "FindIntersectResponse":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "FindIntersect" ]
+        }
+      , "result":
+        { "description": "Intersection found if any, alongside the cardano-node's current tip."
+        , "oneOf":
+          [ { "type": "object"
+            , "title": "IntersectionFound"
+            , "additionalProperties": false
+            , "required": ["IntersectionFound"]
+            , "properties":
+              { "IntersectionFound":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": [ "point", "tip" ]
+                , "properties":
+                  { "point": { "$ref": "#/definitions/Point" }
+                  , "tip": { "$ref": "#/definitions/Tip" }
+                  }
+                }
+              }
+            }
+          , { "type": "object"
+            , "title": "IntersectionNotFound"
+            , "additionalProperties": false
+            , "required": ["IntersectionNotFound"]
+            , "properties":
+              { "IntersectionNotFound":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": [ "tip" ]
+                , "properties":
+                  { "tip": { "$ref": "#/definitions/Tip" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "SubmitTx":
+    { "type": "object"
+    , "description": "Submit a signed and serialized Utxo transaction to the network."
+    , "required": [ "type", "version", "servicename", "methodname" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/request" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "SubmitTx" ]
+        }
+      , "args":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": ["bytes"]
+        , "properties":
+          { "bytes":
+            { "type": "string"
+            , "description": "CBOR-serialized signed transaction, in base64"
+            , "contentEncoding": "base64"
+            , "pattern": "^[A-Za-z0-9+/]=?=?$"
+            }
+          }
+        }
+      , "mirror":
+        { "description": "An arbitrary JSON value that will be mirrored back in the response."
+        }
+      }
+    }
+
+  , "SubmitTxResponse":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "SubmitTx" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "type": "string"
+            , "title": "SubmitSuccess"
+            , "enum": ["SubmitSuccess"]
+            }
+          , { "type": "object"
+            , "title": "SubmitFail"
+            , "additionalProperties": false
+            , "required": ["SubmitFail"]
+            , "properties":
+              { "SubmitFail":
+                { "oneOf":
+                  [ { "$ref": "#/definitions/EraMismatch" }
+                  , { "$ref": "#/definitions/SubmitTxError[Byron]" }
+                  , { "$ref": "#/definitions/SubmitTxError[Shelley]" }
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "Acquire":
+    { "type": "object"
+    , "description": "Acquire a point on chain from which run queries."
+    , "required": [ "type", "version", "servicename", "methodname" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/request" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Acquire" ]
+        }
+      , "args":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": ["point"]
+        , "properties":
+          { "point": { "$ref": "#/definitions/Point" }
+          }
+        }
+      , "mirror":
+        { "description": "An arbitrary JSON value that will be mirrored back in the response."
+        }
+      }
+    }
+
+  , "AcquireResponse":
+    { "type": "object"
+    , "description": "Response to an 'Acquire' request."
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Acquire" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "type": "object"
+            , "title": "AcquireSuccess"
+            , "additionalProperties": false
+            , "required": [ "AcquireSuccess" ]
+            , "properties":
+              { "AcquireSuccess":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": ["point"]
+                , "properties":
+                  { "point": { "$ref": "#/definitions/Point" }
+                  }
+                }
+              }
+            }
+          , { "type": "object"
+            , "title": "AcquireFailure"
+            , "additionalProperties": false
+            , "required": [ "AcquireFailure" ]
+            , "properties":
+              { "AcquireFailure":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": ["failure"]
+                , "properties":
+                  { "failure": { "$ref": "#/definitions/AcquireFailure" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "Release":
+    { "type": "object"
+    , "description": "Release a point on chain previously acquired."
+    , "required": [ "type", "version", "servicename", "methodname" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/request" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Release" ]
+        }
+      , "args":
+        { "type": "object"
+        , "additionalProperties": false
+        }
+      , "mirror":
+        { "description": "An arbitrary JSON value that will be mirrored back in the response."
+        }
+      }
+    }
+
+  , "ReleaseResponse":
+    { "type": "object"
+    , "description": "Response to a 'Release' request."
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Release" ]
+        }
+      , "result":
+        { "type": "string"
+        , "enum": ["Released"]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "Query":
+    { "type": "object"
+    , "description": "Query the current ledger tip."
+    , "required": [ "type", "version", "servicename", "methodname" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/request" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "args":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": ["query"]
+        , "properties":
+          { "query":
+            { "oneOf":
+              [ { "type": "string"
+                , "title": "eraStart"
+                , "enum": ["eraStart"]
+                }
+              , { "type": "string"
+                , "title": "ledgerTip"
+                , "enum": ["ledgerTip"]
+                }
+              , { "type": "string"
+                , "title": "currentEpoch"
+                , "enum": ["currentEpoch"]
+                }
+              , { "type": "object"
+                , "title": "nonMyopicMemberRewards"
+                , "additionalProperties": false
+                , "required": ["nonMyopicMemberRewards"]
+                , "properties":
+                  { "nonMyopicMemberRewards":
+                    { "oneOf":
+                      [ { "type": "array"
+                        , "title": "Lovelaces"
+                        , "items": { "$ref": "#/definitions/Lovelace" }
+                        }
+                      , { "type": "array"
+                        , "title": "Credentials"
+                        , "items": { "$ref": "#/definitions/Hash16" }
+                        }
+                      ]
+                    }
+                  }
+                }
+              , { "type": "object"
+                , "title": "delegationsAndRewards"
+                , "additionalProperties": false
+                , "required": ["delegationsAndRewards"]
+                , "properties":
+                  { "delegationsAndRewards":
+                    { "type": "array"
+                    , "items": { "$ref": "#/definitions/Hash16" }
+                    }
+                  }
+                }
+              , { "type": "string"
+                , "title": "currentProtocolParameters"
+                , "enum": ["currentProtocolParameters"]
+                }
+              , { "type": "string"
+                , "title": "proposedProtocolParameters"
+                , "enum": ["proposedProtocolParameters"]
+                }
+              , { "type": "string"
+                , "title": "stakeDistribution"
+                , "enum": ["stakeDistribution"]
+                }
+              , { "type": "string"
+                , "title": "utxo"
+                , "enum": ["utxo"]
+                }
+              , { "type": "object"
+                , "title": "utxo[filtered]"
+                , "additionalProperties": false
+                , "required": ["utxo"]
+                , "properties":
+                  { "utxo":
+                    { "type": "array"
+                    , "items": { "$ref": "#/definitions/Address" }
+                    }
+                  }
+                }
+              , { "type": "string"
+                , "title": "genesisConfig"
+                , "enum": ["genesisConfig"]
+                }
+              ]
+            }
+          }
+        }
+      , "mirror":
+        { "description": "An arbitrary JSON value that will be mirrored back in the response."
+        }
+      }
+    }
+
+  , "QueryResponse[eraStart]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/Bound" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[ledgerTip]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/Point" }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[currentEpoch]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/Epoch" }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[nonMyopicMemberRewards]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/NonMyopicMemberRewards" }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[delegationsAndRewards]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "type": "object"
+            , "additionalProperties": { "$ref": "#/definitions/DelegationsAndRewards" }
+            , "propertyNames": { "pattern": "^[0-9]+|[0-9a-f]+$" }
+            , "title": "DelegationsAndRewards"
+            }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[currentProtocolParameters]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/ProtocolParameters[Shelley]" }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[proposedProtocolParameters]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "type": "object"
+            , "title": "ProtocolParameters[Shelley]"
+            , "propertyNames": { "contentEncoding": "bech32", "pattern": "^[0-9a-f]+$" }
+            , "additionalProperties": { "$ref": "#/definitions/ProtocolParameters[Shelley]" }
+            }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[stakeDistribution]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/PoolDistribution" }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[utxo]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "type": "array"
+            , "title": "utxo"
+            , "items":
+              { "oneOf":
+                  [ { "$ref": "#/definitions/Utxo" }
+                  , { "$ref": "#/definitions/Utxo[Mary]" }
+                  ]
+              }
+            }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "QueryResponse[genesisConfig]":
+    { "type": "object"
+    , "required": [ "type", "version", "servicename", "methodname", "result" ]
+    , "additionalProperties": false
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/response" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "methodname":
+        { "type": "string"
+        , "enum": [ "Query" ]
+        }
+      , "result":
+        { "oneOf":
+          [ { "$ref": "#/definitions/CompactGenesis" }
+          , { "$ref": "#/definitions/EraMismatch" }
+          , { "$ref": "#/definitions/QueryUnavailableInCurrentEra" }
+          ]
+        }
+      , "reflection":
+        { "description": "Any value that was set by a client request in the 'mirror' field."
+        }
+      }
+    }
+
+  , "Fault":
+    { "type": "object"
+    , "description": "A fault in the JSON-WSP protocol. This is returned by the server when a request from clients is deemed invalid or, when the server was unable to reply to a well-formed request."
+    , "required": [ "type", "version", "servicename", "fault" ]
+    , "additionalProperties": false
+    , "examples":
+      [ { "type": "jsonwsp/fault"
+        ,  "version": "1.0"
+        , "servicename": "ogmios"
+        , "fault":
+          { "string": "Invalid request: invalid query."
+          , "code": "client"
+          }
+        }
+      ]
+    , "properties":
+      { "type":
+        { "type": "string"
+        , "enum": [ "jsonwsp/fault" ]
+        }
+      , "version":
+        { "type": "string"
+        , "enum": [ "1.0" ]
+        }
+      , "servicename":
+        { "type": "string"
+        , "enum": [ "ogmios" ]
+        }
+      , "fault":
+        { "type": "object"
+        , "required": [ "code", "string" ]
+        , "additionalProperties": false
+        , "properties":
+          { "code":
+            { "type": "string"
+            , "description": "An error code telling about the nature of the fault."
+            , "enum": [ "incompatible", "server", "client" ]
+            }
+          , "string":
+            { "type": "string"
+            , "description": "A descriptive error message giving hints about the fault."
+            }
+          }
+        }
+      }
+    }
+  }
+
+, "definitions":
+  { "AcquireFailure":
+    { "type": "string"
+    , "enum": [ "pointTooOld", "pointNotOnChain" ]
+    }
+
+  , "Address":
+    { "type": "string"
+    , "description": "A Cardano address (either legacy format or new format)."
+    , "contentEncoding": "bech32|base58"
+    , "pattern": "[1-9A-HJ-NP-Za-km-z]*"
+    , "examples":
+      [ "addr1q9d34spgg2kdy47n82e7x9pdd6vql6d2engxmpj20jmhuc2047yqd4xnh7u6u5jp4t0q3fkxzckph4tgnzvamlu7k5psuahzcp"
+      , "DdzFFzCqrht8mbSTZHqpM2u4HeND2mdspsaBhdQ1BowPJBMzbDeBMeKgqdoKqo1D4sdPusEdZJVrFJRBBxX1jUEofNDYCJSZLg8MkyCE"
+      ]
+    }
+
+  , "AssetQuantity":
+    { "type": "integer"
+    , "description": "A number of asset, can be negative went burning assets."
+    }
+
+  , "AuxiliaryData":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "hash", "body" ]
+    , "properties":
+      { "hash": { "$ref": "#/definitions/Hash16" }
+      , "body": { "$ref": "#/definitions/AuxiliaryDataBody" }
+      }
+    }
+
+  , "AuxiliaryDataBody":
+    { "type": "object"
+    , "additionalProperties": false
+    , "properties":
+      { "blob": { "$ref": "#/definitions/Metadata" }
+      , "scripts":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Script" }
+        }
+      }
+    }
+
+  , "Block":
+    { "oneOf":
+      [ { "type": "object"
+        , "required": [ "byron" ]
+        , "title": "byron"
+        , "additionalProperties": false
+        , "properties":
+          { "byron": { "$ref": "#/definitions/Block[Byron]" }
+          }
+        }
+      , { "type": "object"
+        , "required": [ "shelley" ]
+        , "title": "shelley"
+        , "additionalProperties": false
+        , "properties":
+          { "shelley": { "$ref": "#/definitions/Block[Shelley]" }
+          }
+        }
+      , { "type": "object"
+        , "required": [ "allegra" ]
+        , "title": "allegra"
+        , "additionalProperties": false
+        , "properties":
+          { "allegra": { "$ref": "#/definitions/Block[Allegra]" }
+          }
+        }
+      , { "type": "object"
+        , "required": [ "mary" ]
+        , "title": "mary"
+        , "additionalProperties": false
+        , "properties":
+          { "mary": { "$ref": "#/definitions/Block[Mary]" }
+          }
+        }
+      ]
+    }
+
+  , "Block[Byron]":
+    { "oneOf":
+      [ { "required": [ "hash", "header", "body" ]
+        , "title": "standard block"
+        , "additionalProperties": false
+        , "examples":
+          [ { "hash": "70efc0c5cd2438d79676ed2e6a2dbb03b878e4420eeb03be899a66ea4edb9125"
+            , "header":
+              { "protocolMagicId": 1097911063
+              , "prevHash": "f7b488614495a8edc61aae5d368ef09f4c18156f57634a1465dcf6483cae2b5b"
+              , "slot": 11029
+              , "blockHeight": 9999
+              , "protocolVersion":
+                { "major": 0
+                , "minor": 0
+                , "patch": 0
+                }
+              , "softwareVersion":
+                { "appName": "cardano-sl"
+                , "number": 0
+                }
+              , "proof":
+                { "utxo":
+                  { "number": 0
+                  , "root": "0e5751c026e543b2e8ab2eb06099daa1d1e5df47778f7787faab45cdf12fe3a8"
+                  , "witnessesHash": "afc0da64183bf2664f3d4eec7238d524ba607faeeab24fc100eb861dba69971b"
+                  }
+                , "delegation": "afc0da64183bf2664f3d4eec7238d524ba607faeeab24fc100eb861dba69971b"
+                , "update": "4e66280cd94d591072349bec0a3090a53aa945562efb6d08d56e53654b0e4098"
+                }
+              , "genesisKey": "cb51d29ab94e50d9a144d4f426564cec700dee4d9e857aacf91d3b689374d81f742a452818cf2489c16dfc186f6e9c76b7df40845b7c450785f02d8809767575"
+              , "signature":
+                { "dlgCertificate":
+                  { "epoch": 0
+                  , "issuerVk": "cb51d29ab94e50d9a144d4f426564cec700dee4d9e857aacf91d3b689374d81f742a452818cf2489c16dfc186f6e9c76b7df40845b7c450785f02d8809767575"
+                  , "delegateVk": "7ec249d890d0aaf9a81207960c163ae2d6ac5e715ca6b96d5860e50d9f2b2b2a1d568faa87c9cc8bfd433a3224a96ec5d101b4b6e9db008db8857f49bae294b2"
+                  , "signature": "owS/RbRPvMx49UuQFKay1DVGMev/I1rrsucaFb3Vgr43lDhMG6cTuZ7wV2bpK49Diy/FrzSfK7FuheN4CqhMBw=="
+                  }
+                , "signature": "gi2uNsjBab7lBHnNgsPwofcgKC+i2FYZrlrx/vaQze1actNwHh3vnrvz3PMRDWszeP82/iwIN54nANEhTv9EAg=="
+                }
+              }
+            , "body":
+              { "txPayload": []
+              , "dlgPayload": []
+              , "updatePayload":
+                { "proposal": null
+                , "votes": []
+                }
+              }
+            }
+          ]
+        , "properties":
+          { "hash": { "$ref": "#/definitions/Hash16" }
+          , "header":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "blockHeight", "genesisKey", "prevHash", "proof", "protocolMagicId", "protocolVersion", "signature", "slot", "softwareVersion" ]
+            , "$omitted-if-compact": ["proof", "signature"]
+            , "properties":
+              { "blockHeight": { "$ref": "#/definitions/BlockNo" }
+              , "genesisKey": { "$ref": "#/definitions/Hash16" }
+              , "prevHash": { "$ref": "#/definitions/Hash16" }
+              , "proof": { "$ref": "#/definitions/BlockProof" }
+              , "protocolMagicId": { "$ref": "#/definitions/ProtocolMagicId" }
+              , "protocolVersion": { "$ref": "#/definitions/ProtocolVersion" }
+              , "signature": { "$ref": "#/definitions/BlockSignature" }
+              , "slot": { "$ref": "#/definitions/Slot" }
+              , "softwareVersion": { "$ref": "#/definitions/SoftwareVersion" }
+              }
+            }
+          , "body":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "txPayload", "dlgPayload", "updatePayload" ]
+            , "$omitted-if-compact": ["dlgPayload"]
+            , "properties":
+              { "txPayload":
+                { "type": "array"
+                , "items":
+                  { "type": "object"
+                  , "additionalProperties": false
+                  , "required": [ "id", "body", "witness" ]
+                  , "$omitted-if-compact": ["witness"]
+                  , "properties":
+                    { "id": { "$ref": "#/definitions/Hash16" }
+                    , "body": { "$ref": "#/definitions/Tx" }
+                    , "witness":
+                      { "type": "array"
+                      , "items": { "$ref": "#/definitions/TxWitness" }
+                      }
+                    }
+                  }
+                }
+              , "dlgPayload":
+                { "type": "array"
+                , "items": { "$ref": "#/definitions/DlgCertificate"}
+                }
+              , "updatePayload":
+                { "type": "object"
+                , "additionalProperties": false
+                , "required": [ "proposal", "votes" ]
+                , "$omitted-if-compact": ["votes"]
+                , "properties":
+                  { "proposal":
+                    { "oneOf":
+                      [ { "type": "null", "title": "null" }
+                      , { "type": "object"
+                        , "title": "proposal"
+                        , "additionalProperties": false
+                        , "required": [ "body", "issuer", "signature" ]
+                        , "properties":
+                          { "body":
+                            { "type": "object"
+                            , "additionalProperties": false
+                            , "required": [ "protocolVersion", "parametersUpdate", "softwareVersion", "metadata" ]
+                            , "properties":
+                              { "protocolVersion": { "$ref": "#/definitions/ProtocolVersion" }
+                              , "softwareVersion": { "$ref": "#/definitions/SoftwareVersion" }
+                              , "metadata":
+                                { "type": "object"
+                                , "additionalProperties": true
+                                }
+                              , "parametersUpdate": { "$ref": "#/definitions/ProtocolParameters[Byron]" }
+                              }
+                            }
+                          , "issuer": { "$ref": "#/definitions/Hash64" }
+                          , "signature": { "$ref": "#/definitions/Hash64" }
+                          }
+                        }
+                      ]
+                    }
+                  , "votes":
+                    { "type": "array"
+                    , "items": { "$ref": "#/definitions/Vote" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      , { "required": [ "hash", "header" ]
+        , "title": "epoch boundary block"
+        , "additionalProperties": false
+        , "properties":
+          { "hash": { "$ref": "#/definitions/Hash16" }
+          , "header":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "blockHeight", "epoch", "prevHash" ]
+            , "properties":
+              { "blockHeight": { "$ref": "#/definitions/BlockNo" }
+              , "epoch": { "$ref": "#/definitions/Epoch" }
+              , "prevHash": { "$ref": "#/definitions/Hash16" }
+              }
+            }
+          }
+        }
+      ]
+    }
+
+  , "Block[Shelley]":
+    { "type": "object"
+    , "additionalProperties": false
+    , "examples":
+      [ { "body":
+          [ { "id": "9fdc525c20bc00d9dfa9d14904b65e01910c0dfe3bb39865523c1e20eaeb0903"
+            , "body":
+              { "inputs":
+                [ { "txId": "b984f9c8b36f3fc2d6a5ae5cd7e9741419399d182e5fa1112d94555d40dd3406"
+                  , "index": 0
+                  }
+                ]
+              , "outputs":
+                [ { "address": "addr1qx8gq5rhhrwt0tp3s8qexqglp9tpwruvtfvswplf4juwjqtdqmlq5k5vkmftes6jtqw75cntkke0vmkls4nckte0576st3e6s6"
+                  , "value": 97825743
+                  }
+                ]
+              , "certificates":
+                [ { "stakeKeyRegistration": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+                  }
+                , { "stakeDelegation":
+                    { "delegator": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+                    , "delegatee": "pool1pshqcksxywy68lt04lw6uf35f4yssekh5dx2mxqmyrukke2z5y3"
+                    }
+                  }
+                ]
+              , "withdrawals": {}
+              , "fee": 174257
+              , "timeToLive": 4700420
+              , "update": null
+              }
+            , "witness":
+              { "signatures":
+                [ { "386020d73807f285ba3259efacd9fbea1939ebd97dc2ddc3b178d427e5a047f6": "5bckfySir7f4G+SV83UPw0+42qqFcEU+sdmK+uejnx6gn6OFMckasHBY8xPWabJ9w5xMmD8sRJ5VC7bNsUU0Ag=="
+                  , "de735ba8771f521b50bc3130c4a7d6f0784df718d3ed3ca32befd9a4650c2e8a": "KHlV88SX+sODj4EqHW7U1wxLL2nVuq/wg43rdaarckroEZc3k1h7YcH0CyAoBvy5+xv6aZ6clDvceeUliD6RCw=="
+                  }
+                ]
+              , "scripts": {}
+              , "bootstrap": []
+              }
+            , "metadata": null
+            }
+          ]
+        , "header":
+          { "blockHeight": 4500510
+          , "slot": 4693240
+          , "prevHash": "286b7c1c47393c7d12abcc1c5d94fea4300f987cd76fe27ec2147dca18e6a8e6"
+          , "issuerVk": "5fddeedade2714d6db2f9e1104743d2d8d818ecddc306e176108db14caadd441"
+          , "issuerVrf": "axwYeh90N9B55BQwtqn8eymybovJxGco5VE6kwTyIm8="
+          , "nonce":
+            { "output": "GTPlGb3NpwZxuBsnoXhkvHoZvs+D9UsDCwb6WTLBm8lu3gKOOwSdStwGxaGIE7+FAcPXaOJTcUNw2rm48N9RwA=="
+            , "proof": "XHi/02KfvJqpg7x7yVQTZBYXZPxRapD2fhBMZWYlZIGQrMrjGeScmIPIYR4VvyYUJ/cthOLGcxhTpR8z1kfLX0QRzwO7vRSuZl/uMs4E3go="
+            }
+          , "leaderValue":
+            { "output": "wrqii+3nrDTTquWVCIwn8lPt52duurZ++RyfZQtlwUssRJnQybirFrRRNUETpA7sXPzu66j2X9qt7nvHjGB7DQ=="
+            , "proof": "ooR9VQrP8yl2Iu3+v03l5F42rETNzGVljB3OsEYUDMp+iC4LZRmu+6wcfeM4y5qCyr42PPtAaaebnHRV/1oHJNqSyW+2iRuoKywh0X3uKgk="
+            }
+          , "blockSize": 426
+          , "blockHash": "ca26d2d83980492d433751b388423196c5d86219e206be6895b7c169c957e987"
+          , "opCert":
+            { "hotVk": "BUxG5N9t61Y1poqk9d7xRXOnAeqTfDzeCE9unqDE8Ww="
+            , "count": 0
+            , "kesPeriod": 0
+            , "sigma": "SA6eoFShv4vC+6Z9JVlr/rPIuXLHuUOJlT4BFcFgWj0xUYjVCcVTz9ImxIPGNeuCemDXW9mEhWoK+42KNDWcBw=="
+            }
+          , "protocolVersion":
+            { "major": 2
+            , "minor": 0
+            }
+          , "signature": "W6pICB+fcHajaybaN4l3Llep5/Olun1rtKucRlnNZgrpS+i7Y0Y2mgQpNztXe5VvHCUl/M8YcpowUxTLRusLBTLjNz4SlRg4XfBcIOrcDNWcbl+koOXPdX5DUyZqVIWeHlWkxgZWqX+ARwnMV+//wGBs4M86ngLLMr+BrkWyXniZrw+Bt63Yf/cqpyTznauI/I24ZBWnV9cfbmu7zQPaSzEVzDmNgX4JJhznWolFxgqhNNRfYobkNOBu5cycu5Gff8G6EQJnq51Uz0TFN7kQXTM6YVJlwkaXWLwBNayUGzW5KbQ1rChYjAbQ5N+uNpoK6Iff+7hDWW81UgsK+yu0XJM1gXrfgmsNyOL0h2JINXrfAUaBALBUBYnLmi3h0Vmn45SRP40QyuDAmd/hu7S5SUCUY2S7K97p+ZA5bgPqZ8FqjO3W7SfAgpgIKa0gJFRLBiNm03TWRPxNDAq6eIfvBnFlf0QD9WPtuFif84Z9UnyBZuIyZPY4v65Ksy+TZLCCc0w0Z4xWfY3Bo1vvMLsD1OHABYMtt7MbKxW48GgfYTheM3izQfZrbHIiUsYZDCGnVyThud1efl+p9K81nks9IQ=="
+          }
+        , "headerHash": "3a85a47e2fdd8350667fe6a858018318b9c200c4d62f8d85c8aaf0fb273572d5"
+        }
+      ]
+    , "properties":
+      { "body":
+        { "type": "array"
+        , "items":
+          { "type": "object"
+          , "additionalProperties": false
+          , "required": [ "id", "body", "witness", "metadata" ]
+          , "$omitted-if-compact": ["witness"]
+          , "properties":
+            { "id": { "$ref": "#/definitions/Hash16" }
+            , "body":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["inputs","outputs","certificates","withdrawals","fee","timeToLive","update"]
+              , "properties":
+                { "inputs":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/TxIn" }
+                  }
+                , "outputs":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/TxOut" }
+                  }
+                , "certificates":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/Certificate" }
+                  }
+                , "withdrawals": { "$ref": "#/definitions/Withdrawals" }
+                , "fee": { "$ref": "#/definitions/Lovelace" }
+                , "timeToLive": { "$ref": "#/definitions/Slot" }
+                , "update": { "$ref": "#/definitions/Update[Shelley]" }
+                }
+              }
+            , "witness":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["signatures","scripts","bootstrap"]
+              , "properties":
+                { "signatures":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/Signature" }
+                  }
+                , "scripts":
+                  { "type": "object"
+                  , "propertyNames": { "contentEncoding": "base16", "pattern": "^[0-9a-f]+$" }
+                  , "additionalProperties": { "$ref": "#/definitions/Script" }
+                  }
+                , "bootstrap":
+                  { "type": "array"
+                  , "items":
+                    { "type": "object"
+                    , "additionalProperties": false
+                    , "properties":
+                      { "signature": { "$ref": "#/definitions/Hash64" }
+                      , "chainCode":
+                        { "oneOf":
+                          [ { "$ref": "#/definitions/Hash16" }
+                          , { "type": "null", "title": "null" }
+                          ]
+                        }
+                      , "addressAttributes":
+                        { "oneOf":
+                          [ { "$ref": "#/definitions/Hash64" }
+                          , { "type": "null", "title": "null" }
+                          ]
+                        }
+                      , "key": { "$ref": "#/definitions/Hash16" }
+                      }
+                    }
+                  }
+                }
+              }
+            , "metadata":
+              { "oneOf":
+                [ { "$ref": "#/definitions/AuxiliaryData" }
+                , { "type": "null", "title": "null" }
+                ]
+              }
+            }
+          }
+        }
+      , "headerHash": { "$ref": "#/definitions/Hash16" }
+      , "header":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required":
+          [ "blockHeight","slot","prevHash","issuerVk","issuerVrf","leaderValue"
+          , "blockSize", "blockHash","opCert","protocolVersion","signature"
+          ]
+        , "$omitted-if-compact": ["signature", "nonce", "leaderValue", "opCert", "protocolVersion"]
+        , "properties":
+          { "blockHeight": { "$ref": "#/definitions/BlockNo" }
+          , "slot": { "$ref": "#/definitions/Slot" }
+          , "prevHash": { "$ref": "#/definitions/Hash16" }
+          , "issuerVk": { "$ref": "#/definitions/Hash16" }
+          , "issuerVrf": { "$ref": "#/definitions/Hash64" }
+          , "nonce": { "$ref": "#/definitions/NonceProof" }
+          , "leaderValue": { "$ref": "#/definitions/LeaderValue" }
+          , "blockSize": { "$ref": "#/definitions/BlockSize" }
+          , "blockHash": { "$ref": "#/definitions/Hash16" }
+          , "opCert": { "$ref": "#/definitions/OpCert" }
+          , "protocolVersion": { "$ref": "#/definitions/ProtocolVersion" }
+          , "signature": { "$ref": "#/definitions/Hash64" }
+          }
+        }
+      }
+    }
+
+  , "Block[Allegra]":
+    { "type": "object"
+    , "additionalProperties": false
+    , "examples":
+      [ { "body":
+          [ { "id": "9fdc525c20bc00d9dfa9d14904b65e01910c0dfe3bb39865523c1e20eaeb0903"
+            , "body":
+              { "inputs":
+                [ { "txId": "b984f9c8b36f3fc2d6a5ae5cd7e9741419399d182e5fa1112d94555d40dd3406"
+                  , "index": 0
+                  }
+                ]
+              , "outputs":
+                [ { "address": "addr1qx8gq5rhhrwt0tp3s8qexqglp9tpwruvtfvswplf4juwjqtdqmlq5k5vkmftes6jtqw75cntkke0vmkls4nckte0576st3e6s6"
+                  , "value": 97825743
+                  }
+                ]
+              , "certificates":
+                [ { "stakeKeyRegistration": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+                  }
+                , { "stakeDelegation":
+                    { "delegator": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+                    , "delegatee": "pool1pshqcksxywy68lt04lw6uf35f4yssekh5dx2mxqmyrukke2z5y3"
+                    }
+                  }
+                ]
+              , "withdrawals": {}
+              , "fee": 174257
+              , "timeToLive": 4700420
+              , "update": null
+              }
+            , "witness":
+              { "signatures":
+                [ { "386020d73807f285ba3259efacd9fbea1939ebd97dc2ddc3b178d427e5a047f6": "5bckfySir7f4G+SV83UPw0+42qqFcEU+sdmK+uejnx6gn6OFMckasHBY8xPWabJ9w5xMmD8sRJ5VC7bNsUU0Ag=="
+                  , "de735ba8771f521b50bc3130c4a7d6f0784df718d3ed3ca32befd9a4650c2e8a": "KHlV88SX+sODj4EqHW7U1wxLL2nVuq/wg43rdaarckroEZc3k1h7YcH0CyAoBvy5+xv6aZ6clDvceeUliD6RCw=="
+                  }
+                ]
+              , "scripts": {}
+              , "bootstrap": []
+              }
+            , "metadata": null
+            }
+          ]
+        , "header":
+          { "blockHeight": 4500510
+          , "slot": 4693240
+          , "prevHash": "286b7c1c47393c7d12abcc1c5d94fea4300f987cd76fe27ec2147dca18e6a8e6"
+          , "issuerVk": "5fddeedade2714d6db2f9e1104743d2d8d818ecddc306e176108db14caadd441"
+          , "issuerVrf": "axwYeh90N9B55BQwtqn8eymybovJxGco5VE6kwTyIm8="
+          , "nonce":
+            { "output": "GTPlGb3NpwZxuBsnoXhkvHoZvs+D9UsDCwb6WTLBm8lu3gKOOwSdStwGxaGIE7+FAcPXaOJTcUNw2rm48N9RwA=="
+            , "proof": "XHi/02KfvJqpg7x7yVQTZBYXZPxRapD2fhBMZWYlZIGQrMrjGeScmIPIYR4VvyYUJ/cthOLGcxhTpR8z1kfLX0QRzwO7vRSuZl/uMs4E3go="
+            }
+          , "leaderValue":
+            { "output": "wrqii+3nrDTTquWVCIwn8lPt52duurZ++RyfZQtlwUssRJnQybirFrRRNUETpA7sXPzu66j2X9qt7nvHjGB7DQ=="
+            , "proof": "ooR9VQrP8yl2Iu3+v03l5F42rETNzGVljB3OsEYUDMp+iC4LZRmu+6wcfeM4y5qCyr42PPtAaaebnHRV/1oHJNqSyW+2iRuoKywh0X3uKgk="
+            }
+          , "blockSize": 426
+          , "blockHash": "ca26d2d83980492d433751b388423196c5d86219e206be6895b7c169c957e987"
+          , "opCert":
+            { "hotVk": "BUxG5N9t61Y1poqk9d7xRXOnAeqTfDzeCE9unqDE8Ww="
+            , "count": 0
+            , "kesPeriod": 0
+            , "sigma": "SA6eoFShv4vC+6Z9JVlr/rPIuXLHuUOJlT4BFcFgWj0xUYjVCcVTz9ImxIPGNeuCemDXW9mEhWoK+42KNDWcBw=="
+            }
+          , "protocolVersion":
+            { "major": 2
+            , "minor": 0
+            }
+          , "signature": "W6pICB+fcHajaybaN4l3Llep5/Olun1rtKucRlnNZgrpS+i7Y0Y2mgQpNztXe5VvHCUl/M8YcpowUxTLRusLBTLjNz4SlRg4XfBcIOrcDNWcbl+koOXPdX5DUyZqVIWeHlWkxgZWqX+ARwnMV+//wGBs4M86ngLLMr+BrkWyXniZrw+Bt63Yf/cqpyTznauI/I24ZBWnV9cfbmu7zQPaSzEVzDmNgX4JJhznWolFxgqhNNRfYobkNOBu5cycu5Gff8G6EQJnq51Uz0TFN7kQXTM6YVJlwkaXWLwBNayUGzW5KbQ1rChYjAbQ5N+uNpoK6Iff+7hDWW81UgsK+yu0XJM1gXrfgmsNyOL0h2JINXrfAUaBALBUBYnLmi3h0Vmn45SRP40QyuDAmd/hu7S5SUCUY2S7K97p+ZA5bgPqZ8FqjO3W7SfAgpgIKa0gJFRLBiNm03TWRPxNDAq6eIfvBnFlf0QD9WPtuFif84Z9UnyBZuIyZPY4v65Ksy+TZLCCc0w0Z4xWfY3Bo1vvMLsD1OHABYMtt7MbKxW48GgfYTheM3izQfZrbHIiUsYZDCGnVyThud1efl+p9K81nks9IQ=="
+          }
+        , "headerHash": "3a85a47e2fdd8350667fe6a858018318b9c200c4d62f8d85c8aaf0fb273572d5"
+        }
+      ]
+    , "properties":
+      { "body":
+        { "type": "array"
+        , "items":
+          { "type": "object"
+          , "additionalProperties": false
+          , "required": [ "id", "body", "witness", "metadata" ]
+          , "$omitted-if-compact": ["witness"]
+          , "properties":
+            { "id": { "$ref": "#/definitions/Hash16" }
+            , "body":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["inputs","outputs","certificates","withdrawals","fee","validityInterval","update"]
+              , "properties":
+                { "inputs":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/TxIn" }
+                  }
+                , "outputs":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/TxOut" }
+                  }
+                , "certificates":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/Certificate" }
+                  }
+                , "withdrawals": { "$ref": "#/definitions/Withdrawals" }
+                , "fee": { "$ref": "#/definitions/Lovelace" }
+                , "validityInterval": { "$ref": "#/definitions/ValidityInterval" }
+                , "update": { "$ref": "#/definitions/Update[Shelley]" }
+                }
+              }
+            , "witness":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["signatures","scripts","bootstrap"]
+              , "properties":
+                { "signatures":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/Signature" }
+                  }
+                , "scripts":
+                  { "type": "object"
+                  , "propertyNames": { "contentEncoding": "base16", "pattern": "^[0-9a-f]+$" }
+                  , "additionalProperties": { "$ref": "#/definitions/Script" }
+                  }
+                , "bootstrap":
+                  { "type": "array"
+                  , "items":
+                    { "type": "object"
+                    , "additionalProperties": false
+                    , "properties":
+                      { "signature": { "$ref": "#/definitions/Hash64" }
+                      , "chainCode":
+                        { "oneOf":
+                          [ { "$ref": "#/definitions/Hash16" }
+                          , { "type": "null", "title": "null" }
+                          ]
+                        }
+                      , "addressAttributes":
+                        { "oneOf":
+                          [ { "$ref": "#/definitions/Hash64" }
+                          , { "type": "null", "title": "null" }
+                          ]
+                        }
+                      , "key": { "$ref": "#/definitions/Hash16" }
+                      }
+                    }
+                  }
+                }
+              }
+            , "metadata":
+              { "oneOf":
+                [ { "$ref": "#/definitions/AuxiliaryData" }
+                , { "type": "null", "title": "null" }
+                ]
+              }
+            }
+          }
+        }
+      , "headerHash": { "$ref": "#/definitions/Block[Shelley]/properties/headerHash" }
+      , "header": { "$ref": "#/definitions/Block[Shelley]/properties/header" }
+      }
+    }
+
+  , "Block[Mary]":
+    { "type": "object"
+    , "additionalProperties": false
+    , "examples":
+      [ { "body":
+          [ { "id": "85070fae1939d851fb50cb64d5c8c043fff628530f02a0a56575738926205de3"
+            , "body":
+              { "inputs":
+                [ { "txId": "89e229cfe25fa75e8e09da42bd7d7f2308dead431ceae59d0f0707cb833fe46a"
+                  , "index": 0
+                  }
+                ]
+              , "outputs":
+                [ { "address": "addr1q9d34spgg2kdy47n82e7x9pdd6vql6d2engxmpj20jmhuc2047yqd4xnh7u6u5jp4t0q3fkxzckph4tgnzvamlu7k5psuahzcp"
+                  , "value":
+                    { "coins": 104699792
+                    , "assets": {}
+                    }
+                  }
+                , { "address": "addr1q8lmu79hgm3sppz8dta3aftf0cwh2v2eja56wqvzqy4jj0zjt7qgvj7saxdxve35c4ehuxuam4czlz9fw6ls7zr4as9s609d7u"
+                  , "value":
+                    { "coins": 3000000
+                    , "assets":
+                      { "5d9d887de76a2c9d057b3e5d34d5411f7f8dc4d54f0c06e8ed2eb4a9.494e4459": 35000000000000
+                      }
+                    }
+                  }
+                ]
+              , "certificates": []
+              , "withdrawals": {}
+              , "fee": 403300
+              , "validityInterval":
+                { "invalidBefore": null
+                , "invalidHereafter": 23279333
+                }
+              , "update": null
+              , "mint":
+                { "coins": 0
+                , "assets": {}
+                }
+              }
+            , "witness":
+              { "signatures":
+                [ { "a900560b6c0964492849eb5311acac881edeb8d2282122b895fd418243c92f4e": "3TLin5vgz4dQDomhMjW9q4VIQD/X6Q9ECWkA8kVOz/c8R2c4mO1P1+LD/9n2ouHOANNC5ZgzwV2ojAVpZw4IBA=="
+                  , "5c19b9b0dd58b782dcac33cdc925f74c1385d8aae5912f7e1040a2d24a47e4eb": "qjqis5n/XGVp5PCIe0h8h/+ZO6rdIClBfzb7SEaaG4kAuY+zMAnfA57oxcLI6MA81rJ/nVct7FDtLKEHjimlDg=="
+                  }
+                ]
+              , "scripts": {}
+              , "bootstrap": []
+              }
+            , "metadata":
+              { "hash": "69453cc9796ac4987abcdcbfcf087b287d9f5d698aa32960e542cd97baf00429"
+              , "body":
+                { "blob":
+                  { "411":
+                    { "list":
+                      [ { "string": "Minted by Andrew from BCSH!"
+                        }
+                      ]
+                    }
+                  }
+                , "scripts": []
+                }
+              }
+            }
+          ]
+          , "header":
+            { "blockHeight": 5416746
+            , "slot": 23272147
+            , "prevHash": "d7e88e5abb70d9a8c2ff37fe2d7d9a08be91e8821751b8d34ffbb9364f497787"
+            , "issuerVk": "a35f527080d2f9184347b43b4f5205557ca9a86a2e4fb3225ae4f477b81d90fb"
+            , "issuerVrf": "4mSfHroaqvbOqZtUoDtJm7t+9rOv4f8/j91ugsw0LiE="
+            , "nonce":
+              { "output": "dRdKKUTP8dXczeALMgi6Ld4JlQPp36PbHJqoEMCGpTfXvpevh1bOuTg5ITV6M551E8QpoI6Jzwy2oNHTVlswNQ=="
+              , "proof": "yB84OdAnPSjaRBAasHk1Njw4Edmq2wIcJB9e5U10kRuGkLjW5zclz2NPlUdRVrtcLpJLc/W7L9pUYsdolQ8b/BXXp8w0oiMdUp+UgJ7s4QY="
+              }
+            , "leaderValue":
+              { "output": "AALyNsHBmH7EvBsY+WLGB6A07OJOfjrBiYpv313+TvE0JfuHjdaPHaH7C17sJTem37ZN4p5hiOQe2OFwXOe3bA=="
+              , "proof": "DehTPTyVgmoGJFcg1YGFjRNkPX5r9FdR2OPW1cLM9UPPq5PMBRcjmzJ+BiJL2Tjj2XkWeUTERVWCBjAV4e2/JCBaZcAgh2kigeU123UbcQg="
+            }
+            , "blockSize": 426
+            , "blockHash": "a36fca2d54d6dc88d7fd417adfde656749ace8f4a86f3c6918eb1edf29deab45"
+            , "opCert":
+              { "hotVk": "igqoraJVCnAvSbGkMIpLK55ojLSxPNjrFo5d2ZIqsRE="
+              , "count": 0
+              , "kesPeriod": 155
+              , "sigma": "/VtuaWMMmmxa904U5W2LpgAF7JhJBpbZAuBKbjYsc+70rqsv04Y1/JwmoWU7yt0UviliC2J9ZiAfVSDDox3HDQ=="
+              }
+            , "protocolVersion":
+              { "major": 4
+              , "minor": 0
+              }
+            , "signature": "W8DDcf7hD05oAHd5NEIBG9kdMUNeybuEl32lzm7Cbb5FgQiksJib4OH3M06khy2QkJZV9IkVoWjfcJuVBpaWA8VxBwf1xEXVEOOgj9AxV8JkVlhVJNZ3h59aAoIome/CK+LScYQWytbOAZV6peVVfFpCu2AjXwx02xFPPXHy6PEBLz/jxJSu3TR+Wb1sEqNyxaSjUwanWjTszF5YjTquuK9upuHw6kLP2fNcDLvOxK/1TcbUWDmuK47L3eyOYWs52+bMuAFyeDDpNAPMc9zdq0uTteRQATY5dqpUh/X3nLKzrIHbVXLwTMk2ep6uiuVSeDePI1Q6xPx2AbILk4MlU2l0am5yQn6hjw9DwGKPZaFI+tSFPxWhjdrUmkvKYM3a9pZ94ehmjNe2ArREStq5LPqkGv7tPoYC1FaXIEypD+WHILrBv02D1rZ8lm25eWDXwcEYXdoDJ82/ULBvf3h3Ix9PtLD8B8dHbchxKlTYpdGptIIGueR9XZoxEFZfl0C2x+w4IwZvoQCBO+nATUq7VilE6DSwg5eoZH3pvoOvRFLkR7Q5q1aUyuJi1ZMoaQacZ10TPpkVeoIx3NFFK81Daw=="
+            }
+          , "headerHash": "6e15e485f3cf61492ca8150039647fe4be80eb43fcac5a536c170fbabc6a12f2"
+        }
+      ]
+    , "properties":
+      { "body":
+        { "type": "array"
+        , "items":
+          { "type": "object"
+          , "additionalProperties": false
+          , "required": [ "id", "body", "witness", "metadata" ]
+          , "$omitted-if-compact": ["witness"]
+          , "properties":
+            { "id": { "$ref": "#/definitions/Hash16" }
+            , "body":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["inputs","outputs","certificates","withdrawals","fee","validityInterval","mint","update"]
+              , "properties":
+                { "inputs":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/TxIn" }
+                  }
+                , "outputs":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/TxOut[Mary]" }
+                  }
+                , "certificates":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/Certificate" }
+                  }
+                , "withdrawals": { "$ref": "#/definitions/Withdrawals" }
+                , "fee": { "$ref": "#/definitions/Lovelace" }
+                , "validityInterval": { "$ref": "#/definitions/ValidityInterval" }
+                , "update": { "$ref": "#/definitions/Update[Shelley]" }
+                , "mint": { "$ref": "#/definitions/Value" }
+                }
+              }
+            , "witness":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["signatures","scripts","bootstrap"]
+              , "properties":
+                { "signatures":
+                  { "type": "array"
+                  , "items": { "$ref": "#/definitions/Signature" }
+                  }
+                , "scripts":
+                  { "type": "object"
+                  , "propertyNames": { "contentEncoding": "base16", "pattern": "^[0-9a-f]+$" }
+                  , "additionalProperties": { "$ref": "#/definitions/Script" }
+                  }
+                , "bootstrap":
+                  { "type": "array"
+                  , "items":
+                    { "type": "object"
+                    , "additionalProperties": false
+                    , "properties":
+                      { "signature": { "$ref": "#/definitions/Hash64" }
+                      , "chainCode":
+                        { "oneOf":
+                          [ { "$ref": "#/definitions/Hash16" }
+                          , { "type": "null", "title": "null" }
+                          ]
+                        }
+                      , "addressAttributes":
+                        { "oneOf":
+                          [ { "$ref": "#/definitions/Hash64" }
+                          , { "type": "null", "title": "null" }
+                          ]
+                        }
+                      , "key": { "$ref": "#/definitions/Hash16" }
+                      }
+                    }
+                  }
+                }
+              }
+            , "metadata":
+              { "oneOf":
+                [ { "$ref": "#/definitions/AuxiliaryData" }
+                , { "type": "null", "title": "null" }
+                ]
+              }
+            }
+          }
+        }
+      , "headerHash": { "$ref": "#/definitions/Block[Shelley]/properties/headerHash" }
+      , "header": { "$ref": "#/definitions/Block[Shelley]/properties/header" }
+      }
+    }
+
+  , "BlockNo":
+    { "type": "integer"
+    , "description": "A block number, the i-th block to be minted is number i."
+    , "minimum": 0
+    }
+
+  , "BlockProof":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "utxo", "delegation", "update" ]
+    , "properties":
+      { "utxo":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "number", "root", "witnessesHash" ]
+        , "properties":
+          { "number":
+            { "type": "integer"
+            , "minimum": 0
+            }
+          , "root": { "$ref": "#/definitions/Hash16" }
+          , "witnessesHash": { "$ref": "#/definitions/Hash16" }
+          }
+        }
+      , "delegation": { "$ref": "#/definitions/Hash16" }
+      , "update": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "BlockSignature":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "dlgCertificate", "signature" ]
+    , "properties":
+      { "dlgCertificate": { "$ref": "#/definitions/DlgCertificate" }
+      , "signature": { "$ref": "#/definitions/Hash64" }
+      }
+    }
+
+  , "BlockSize":
+    { "type": "integer"
+    , "description": "The size of the block in bytes."
+    , "minimum": 0
+    }
+
+  , "Bound":
+    { "type": "object"
+    , "description": "An era bound which captures the time, slot and epoch at which the era start. The time is relative to the start time of the network."
+    , "additionalProperties": false
+    , "required": ["time", "slot", "epoch"]
+    , "properties":
+      { "time": { "$ref": "#/definitions/RelativeTime" }
+      , "slot": { "$ref": "#/definitions/Slot" }
+      , "epoch": { "$ref": "#/definitions/Epoch" }
+      }
+    }
+
+  , "Certificate":
+    { "oneOf":
+      [ { "type": "object"
+        , "description": "A stake delegation certificate, from a delegator to a stake pool."
+        , "title": "stakeDelegation"
+        , "additionalProperties": false
+        , "required": ["stakeDelegation"]
+        , "properties":
+          { "stakeDelegation":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": ["delegator", "delegatee"]
+            , "properties":
+              { "delegator": { "$ref": "#/definitions/Hash16" }
+              , "delegatee": { "$ref": "#/definitions/PoolId" }
+              }
+            }
+          }
+        , "examples":
+          [ { "stakeDelegation":
+              { "delegator": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+              , "delegatee": "pool1pshqcksxywy68lt04lw6uf35f4yssekh5dx2mxqmyrukke2z5y3"
+              }
+            }
+          ]
+        }
+      , { "type": "object"
+        , "description": "A stake key registration certificate."
+        , "title": "stakeKeyRegistration"
+        , "additionalProperties": false
+        , "required": ["stakeKeyRegistration"]
+        , "properties":
+          { "stakeKeyRegistration": { "$ref": "#/definitions/Hash16" }
+          }
+        , "examples":
+          [ { "stakeKeyRegistration": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+            }
+          ]
+        }
+      , { "type": "object"
+        , "description": "A stake key de-registration certificate."
+        , "title": "stakeKeyDeregistration"
+        , "additionalProperties": false
+        , "required": ["stakeKeyDeregistration"]
+        , "properties":
+          { "stakeKeyDeregistration": { "$ref": "#/definitions/Hash16" }
+          }
+        , "examples":
+          [ { "stakeKeyDeregistration": "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5"
+            }
+          ]
+        }
+      , { "type": "object"
+        , "description": "A pool registration certificate."
+        , "title": "poolRegistration"
+        , "additionalProperties": false
+        , "required": ["poolRegistration"]
+        , "properties":
+          { "poolRegistration":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": ["owners","cost","margin","pledge","vrf","metadata","id","relays","rewardAccount"]
+            , "properties":
+              { "owners":
+                { "type": "array"
+                , "items": { "$ref": "#/definitions/Hash16" }
+                }
+              , "cost": { "$ref": "#/definitions/Lovelace" }
+              , "margin": { "$ref": "#/definitions/Ratio" }
+              , "pledge": { "$ref": "#/definitions/Lovelace" }
+              , "vrf": { "$ref": "#/definitions/Hash16" }
+              , "metadata":
+                { "oneOf":
+                  [ { "type": "null", "title": "null" }
+                  , { "type": "object"
+                    , "title": "metadata"
+                    , "additionalProperties": false
+                    , "required": ["hash","url"]
+                    , "properties":
+                      { "hash": { "$ref": "#/definitions/Hash16" }
+                      , "url":
+                        { "type": "string"
+                        , "format": "uri"
+                        }
+                      }
+                    }
+                  ]
+                }
+              , "id": { "$ref": "#/definitions/PoolId" }
+              , "relays":
+                { "type": "array"
+                , "items": { "$ref": "#/definitions/Relay" }
+                }
+              , "rewardAccount": { "$ref": "#/definitions/RewardAccount" }
+              }
+            }
+          }
+        , "examples":
+          [ { "poolRegistration":
+              { "id": "pool1agk62kg0s9606v78exurl53mqsdu44d6qeuzypur5e7ku6gpgzp"
+              , "vrf": "c91697932cef010ced94eae6854436f8f30a18dbcd16e9176514f9612816023e"
+              , "pledge": 458907757199
+              , "cost": 340000000
+              , "margin": "499/10000"
+              , "rewardAccount": "stake1uy3kcacyk50twxlzluarxwy0wv0nzyt42ecruehek9k5m8g08gvjy"
+              , "owners":
+                [ "236c7704b51eb71be2ff3a33388f731f31117556703e66f9b16d4d9d"
+                ]
+              , "relays":
+                [ { "port": 3001
+                  , "ipv4": "54.163.147.116"
+                  , "ipv6": null
+                  }
+                ]
+              , "metadata":
+                { "url": "https://www.sophias-pool.com/poolInfo"
+                , "hash": "abb6c63334b2c5d107802f932479fc146454a632e886f2b4276d6d00c1d023a2"
+                }
+              }
+            }
+          ]
+        }
+      , { "type": "object"
+        , "description": "A pool retirement certificate."
+        , "additionalProperties": false
+        , "title": "poolRetirement"
+        , "required": ["poolRetirement"]
+        , "properties":
+          { "poolRetirement":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": ["poolId", "retirementEpoch"]
+            , "properties":
+              { "retirementEpoch": { "$ref": "#/definitions/Epoch" }
+              , "poolId": { "$ref": "#/definitions/PoolId" }
+              }
+            }
+          }
+        , "examples":
+          [ { "poolRetirement":
+              { "poolId": "pool14cq225dlh7qy7tcc35fgrkr9yyprlk4cppytjmdv7e0gwm4w9q6"
+              , "retirementEpoch": 237
+              }
+            }
+          ]
+        }
+      , { "type": "object"
+        , "title": "genesisDelegation"
+        , "additionalProperties": false
+        , "required": ["genesisDelegation"]
+        , "properties":
+          { "genesisDelegation":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": ["delegateKeyHash","verificationKeyHash","vrfVerificationKeyHash"]
+            , "properties":
+              { "delegateKeyHash": { "$ref": "#/definitions/Hash16" }
+              , "verificationKeyHash": { "$ref": "#/definitions/Hash16" }
+              , "vrfVerificationKeyHash": { "$ref": "#/definitions/Hash16" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "moveInstantaneousRewards"
+        , "description": "Either `value` or `rewards` will be present, but never both."
+        , "additionalProperties": false
+        , "required": ["moveInstantaneousRewards"]
+        , "properties":
+          { "moveInstantaneousRewards":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": ["pot"]
+            , "properties":
+              { "rewards": { "$ref": "#/definitions/Rewards" }
+              , "value":  { "$ref": "#/definitions/Lovelace" }
+              , "pot": { "$ref": "#/definitions/RewardPot" }
+              }
+            }
+          }
+        }
+      ]
+    }
+
+  , "CompactGenesis":
+    { "type": "object"
+    , "description": "A compact (without genesis UTxO) representation of the genesis configuration."
+    , "additionalProperties": false
+    , "required":
+      [ "systemStart"
+      , "networkMagic"
+      , "network"
+      , "activeSlotsCoefficient"
+      , "securityParameter"
+      , "epochLength"
+      , "slotsPerKesPeriod"
+      , "maxKesEvolutions"
+      , "slotLength"
+      , "updateQuorum"
+      , "maxLovelaceSupply"
+      , "protocolParameters"
+      ]
+    , "properties":
+      { "systemStart": { "$ref": "#/definitions/UtcTime" }
+      , "networkMagic": { "type": "integer" }
+      , "network": { "$ref": "#/definitions/Network" }
+      , "activeSlotsCoefficient": { "$ref": "#/definitions/Ratio" }
+      , "securityParameter": { "type": "integer" }
+      , "epochLength": { "$ref": "#/definitions/Epoch" }
+      , "slotsPerKesPeriod": { "type": "integer" }
+      , "maxKesEvolutions": { "type": "integer" }
+      , "slotLength": { "type": "integer" }
+      , "updateQuorum": { "type": "integer" }
+      , "maxLovelaceSupply": { "type": "integer" }
+      , "protocolParameters": { "$ref": "#/definitions/ProtocolParameters[Shelley]" }
+      }
+    , "examples":
+      [ { "systemStart": "2017-09-23T21:44:51Z"
+        , "networkMagic": 764824073
+        , "network": "mainnet"
+        , "activeSlotsCoefficient": "1/20"
+        , "securityParameter": 2160
+        , "epochLength": 432000
+        , "slotsPerKesPeriod": 129600
+        , "maxKesEvolutions": 62
+        , "slotLength": 1
+        , "updateQuorum": 5
+        , "maxLovelaceSupply": 45000000000000000
+        , "protocolParameters":
+          { "minFeeCoefficient": 44
+          , "minFeeConstant": 155381
+          , "maxBlockBodySize": 65536
+          , "maxBlockHeaderSize": 1100
+          , "maxTxSize": 16384
+          , "stakeKeyDeposit": 2000000
+          , "poolDeposit": 500000000
+          , "poolRetirementEpochBound": 18
+          , "desiredNumberOfPools": 150
+          , "poolInfluence": "3/10"
+          , "monetaryExpansion": "3/1000"
+          , "treasuryExpansion": "1/5"
+          , "decentralizationParameter": "1/1"
+          , "extraEntropy": "neutral"
+          , "protocolVersion":
+            { "major": 2
+            , "minor": 0
+            }
+          , "minUtxoValue": 1000000
+          , "minPoolCost": 340000000
+          }
+        }
+      ]
+    }
+
+  , "DelegationsAndRewards":
+    { "type": "object"
+    , "additionalProperties": false
+    , "properties":
+      { "delegate": { "$ref": "#/definitions/PoolId" }
+      , "rewards": { "$ref": "#/definitions/Lovelace" }
+      }
+    , "examples":
+      [ { "bc1597ad71c55d2d009a9274b3831ded155118dd769f5376decc1369":
+          { "delegate": "pool1kchver88u3kygsak8wgll7htr8uxn5v35lfrsyy842nkscrzyvj"
+          , "rewards": 219558722
+          }
+        }
+      ]
+    }
+
+  , "DlgCertificate":
+    { "type": "object"
+    , "description": "A (Byron) delegation certificate."
+    , "additionalProperties": false
+    , "required": [ "epoch", "issuerVk", "delegateVk", "signature" ]
+    , "properties":
+      { "epoch": { "$ref": "#/definitions/Epoch" }
+      , "issuerVk": { "$ref": "#/definitions/Hash16" }
+      , "delegateVk": { "$ref": "#/definitions/Hash16" }
+      , "signature": { "$ref": "#/definitions/Hash64" }
+      }
+    }
+
+  , "Epoch":
+    { "type": "integer"
+    , "description": "An epoch number."
+    , "minimum": 0
+    }
+
+  , "Era":
+    { "type": "string"
+    , "enum": ["Byron", "Shelley", "Allegra", "Mary"]
+    }
+
+  , "EraMismatch":
+    { "type": "object"
+    , "description": "An era mismatch between a client request and the era the ledger is in. This may occur when running queries on a syncing node and/or when the node is crossing an era."
+    , "additionalProperties": false
+    , "required": [ "eraMismatch" ]
+    , "properties":
+      { "eraMismatch":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "queryEra", "ledgerEra" ]
+        , "properties":
+          { "queryEra": { "$ref": "#/definitions/Era" }
+          , "ledgerEra": { "$ref": "#/definitions/Era" }
+          }
+        }
+      }
+    }
+
+  , "Hash16":
+    { "type": "string"
+    , "contentEncoding": "base16"
+    , "pattern": "^[0-9a-f]*$"
+    }
+
+  , "Hash64":
+    { "type": "string"
+    , "contentEncoding": "base64"
+    , "pattern": "^[A-Za-z0-9+/]*=?=?$"
+    }
+
+  , "InvalidEntity":
+    { "oneOf":
+      [ { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "type", "entity" ]
+        , "properties":
+          { "type":
+            { "type": "string"
+            , "enum": [ "address" ]
+            }
+          , "entity": { "$ref": "#/definitions/Address" }
+          }
+        }
+      , { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "type", "entity" ]
+        , "properties":
+          { "type":
+            { "type": "string"
+            , "enum": [ "poolRegistration" ]
+            }
+          , "entity": { "$ref": "#/definitions/PoolId" }
+          }
+        }
+      , { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "type", "entity" ]
+        , "properties":
+          { "type":
+            { "type": "string"
+            , "enum": [ "rewardAccount" ]
+            }
+          , "entity": { "$ref": "#/definitions/RewardAccount" }
+          }
+        }
+      ]
+    }
+
+  , "LeaderValue":
+    { "type": "object"
+    , "description": "In Ouroboros Praos, designate the leader's contribution to the Multi-Party computation used for calculating the leader schedule."
+    , "additionalProperties": false
+    , "properties":
+      { "proof": { "$ref": "#/definitions/Hash64" }
+      , "output": { "$ref": "#/definitions/Hash64" }
+      }
+    }
+
+  , "Lovelace":
+    { "type": "integer"
+    , "description": "An amount, in Lovelace (1e6 Lovelace = 1 Ada)"
+    , "minimum": 0
+    }
+
+  , "LovelaceDelta":
+    { "type": "integer"
+    , "description": "An amount, possibly negative, in Lovelace (1e6 Lovelace = 1 Ada)."
+    }
+
+  , "LovelaceError":
+    { "oneOf":
+      [ { "type": "object"
+        , "title": "underflow"
+        , "additionalProperties": false
+        , "required": [ "underflow" ]
+        , "properties":
+          { "underflow":
+            { "type": "array"
+            , "items": { "type": "integer" }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "tooSmall"
+        , "additionalProperties": false
+        , "required": [ "tooSmall" ]
+        , "properties":
+          { "tooSmall": { "type": "integer" }
+          }
+        }
+      , { "type": "object"
+        , "title": "tooLarge"
+        , "additionalProperties": false
+        , "required": [ "tooLarge" ]
+        , "properties":
+          { "tooLarge": { "type": "integer" }
+          }
+        }
+      , { "type": "object"
+        , "title": "overflow"
+        , "additionalProperties": false
+        , "required": [ "overflow" ]
+        , "properties":
+          { "overflow": { "type": "integer" }
+          }
+        }
+      ]
+    }
+
+  , "Metadata":
+    { "type": "object"
+    , "propertyNames": { "pattern": "^-?[0-9]+$" }
+    , "examples":
+      [ { "42":
+          { "int": 14
+          }
+        }
+      , { "42":
+          { "string": "Some Text"
+          }
+        }
+      , { "42":
+          { "list":
+            [ { "int": 1 }
+            , { "int": 2 }
+            , { "int": 3 }
+            ]
+          }
+        , "1337":
+          { "list":
+            [ { "string": "MyString" }
+            , { "map":
+                [ { "k": { "string": "signature" }
+                  , "v": { "bytes": "b359cedd0ccb" }
+                  }
+                , { "k":
+                    { "list":
+                      [ { "string": "keys can also" }
+                      , { "string": "be compound objects" }
+                      ]
+                    }
+                  , "v":
+                    { "int": -42
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    , "additionalProperties": { "$ref": "#/definitions/Metadatum" }
+    }
+
+  , "Metadatum":
+    { "oneOf":
+      [ { "type": "object"
+        , "title": "int"
+        , "additionalProperties": false
+        , "required": ["int"]
+        , "properties":
+          { "int":
+              { "type": "integer"
+              }
+          }
+        }
+      , { "type": "object"
+        , "title": "string"
+        , "additionalProperties": false
+        , "required": ["string"]
+        , "properties":
+          { "string":
+              { "type": "string"
+              }
+          }
+        }
+      , { "type": "object"
+        , "title": "bytes"
+        , "additionalProperties": false
+        , "required": ["bytes"]
+        , "properties":
+          { "bytes":
+            { "type": "string"
+            , "contentEncoding": "base16"
+            , "pattern": "^[0-9a-f]*$"
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "list"
+        , "additionalProperties": false
+        , "required": ["list"]
+        , "properties":
+          { "list":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/Metadatum" }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "map"
+        , "additionalProperties": false
+        , "required": ["map"]
+        , "properties":
+          { "map":
+            { "type": "array"
+            , "items":
+              { "type": "object"
+              , "additionalProperties": false
+              , "required": ["k", "v"]
+              , "properties":
+                { "k": { "$ref": "#/definitions/Metadatum" }
+                , "v": { "$ref": "#/definitions/Metadatum" }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+
+  , "Network":
+    { "type": "string"
+    , "description": "A network target, as defined since the Shelley era."
+    , "enum": [ "mainnet", "testnet" ]
+    }
+
+  , "NetworkMagic":
+    { "oneOf":
+      [ { "type": "string"
+        , "description": "A network target, as defined in Byron."
+        , "title": "mainnet"
+        , "enum": [ "mainnet" ]
+        }
+      , { "type": "object"
+        , "description": "A network target, as defined in Byron."
+        , "title": "testnet"
+        , "additionalProperties": false
+        , "required": [ "testnet" ]
+        , "properties":
+          { "testnet": { "type": "integer" }
+          }
+        }
+      ]
+    }
+
+  , "Nonce":
+    { "oneOf":
+      [ { "type": "string"
+        , "enum": ["neutral"]
+        , "title": "neutral"
+        }
+      , { "$ref": "#/definitions/Hash16" }
+      ]
+    }
+
+  , "NonceProof":
+    { "type": "object"
+    , "additionalProperties": false
+    , "properties":
+      { "proof": { "$ref": "#/definitions/Hash64" }
+      , "output": { "$ref": "#/definitions/Hash64" }
+      }
+    }
+
+  , "NonMyopicMemberRewards":
+    { "type": "object"
+    , "description": "Rewards that can be expected assuming a pool is fully saturated. Such rewards are said non-myopic, in opposition to short-sighted rewards looking at immediate benefits. Keys of the map can be either Lovelace amounts or account credentials depending on the query."
+    , "propertyNames": { "pattern": "^[0-9]+|[0-9a-f]+$" }
+    , "additionalProperties":
+      { "type": "object"
+      , "propertyNames": { "contentEncoding": "bech32", "pattern": "^[0-9a-f]+$" }
+      , "additionalProperties":
+        { "type": "number"
+        , "minimum": 0
+        }
+      }
+    , "examples":
+      [ { "1000000":
+          { "pool1qqqqqdk4zhsjuxxd8jyvwncf5eucfskz0xjjj64fdmlgj735lr9": 688
+          , "pool1qqqqpanw9zc0rzh0yp247nzf2s35uvnsm7aaesfl2nnejaev0uc": 676
+          , "pool1qqqqzyqf8mlm70883zht60n4q6uqxg4a8x266sewv8ad2grkztl": 0
+          , "pool1qqqqrwzy7njvjq9wph7usj5gghm3py9c97688ek8pgc7uem9cfz": 653
+          }
+        , "bc1597ad71c55d2d009a9274b3831ded155118dd769f5376decc1369":
+          { "pool1qgmwcxs8d8qmr0vtvsqd9u8gugrventh5dcqukmu79e2sgfuu8t": 96946024
+          , "pool1qfzjwrtupyvzx0atp5pa3m82v7s8z2eqyqffa0grpyf4j349h6r": 0
+          , "pool1qfxukshs4fkcrflzdnxa2fdza5lfvew3y6echg8ckaa4q8m5hyf": 103181546
+          }
+        }
+      ]
+    }
+
+  , "NullableInteger":
+    { "oneOf":
+      [ { "type": "integer", "title": "integer" }
+      , { "type": "null", "title": "null" }
+      ]
+    }
+
+  , "NullableNumber":
+    { "oneOf":
+      [ { "type": "number", "title": "integer" }
+      , { "type": "null", "title": "null" }
+      ]
+    }
+
+  , "NullableRatio":
+    { "oneOf":
+      [ { "$ref": "#/definitions/Ratio" }
+      , { "type": "null", "title": "null" }
+      ]
+    }
+
+  , "OpCert":
+    { "type": "object"
+    , "description": "Certificate identifying a stake pool operator."
+    , "additionalProperties": false
+    , "properties":
+      { "count": { "type": "integer", "minimum": 0 }
+      , "sigma": { "$ref": "#/definitions/Hash64" }
+      , "kesPeriod": { "type": "integer", "minimum": 0 }
+      , "hotVk": { "$ref": "#/definitions/Hash64" }
+      }
+    }
+
+  , "Point":
+    { "oneOf":
+      [ { "type": "object"
+        , "description": "A point on the chain, identified by a slot and a block header hash."
+        , "title": "point"
+        , "additionalProperties": false
+        , "required": [ "slot", "hash" ]
+        , "properties":
+          { "slot": { "$ref": "#/definitions/Slot" }
+          , "hash": { "$ref": "#/definitions/Hash16" }
+          }
+        }
+      , { "type": "string"
+        , "description": "The origin of the blockchain. This point is special in the sense that it doesn't point to any existing slots, but is preceding any existing other point."
+        , "title": "origin"
+        , "enum": [ "origin" ]
+        }
+      ]
+    }
+
+  , "PoolDistribution":
+    { "type": "object"
+    , "description": "Distribution of stake across registered stake pools. Each key in the map corresponds to a pool id."
+    , "propertyNames": { "$ref": "#/definitions/PoolId" }
+    , "additionalProperties":
+      { "type": "object"
+      , "additionalProperties": false
+      , "required": ["stake", "vrf"]
+      , "properties":
+        { "stake": { "$ref": "#/definitions/Ratio" }
+        , "vrf": { "$ref": "#/definitions/Hash16" }
+        }
+      }
+    , "examples":
+      [ { "pool1qqqqqdk4zhsjuxxd8jyvwncf5eucfskz0xjjj64fdmlgj735lr9":
+          { "stake": "64666784451745/32381463809418351"
+          , "vrf": "6de7605b2afd7e205318fc8b4329d26439b5b179b4746fea12f1ce50395f5d9e"
+          }
+        , "pool1qqqqpanw9zc0rzh0yp247nzf2s35uvnsm7aaesfl2nnejaev0uc":
+          { "stake": "7072561631906/10793821269806117"
+          , "vrf": "bb862fcc397de6c06dea9a9ad8442a3d17826e01799a79b861fc083341eaed3d"
+          }
+        }
+      ]
+    }
+
+  , "PoolId":
+    { "type": "string"
+    , "contentEncoding": "bech32"
+    , "pattern": "^pool1[0-9a-z]*$"
+    , "examples":
+      [ "pool1qqqqpanw9zc0rzh0yp247nzf2s35uvnsm7aaesfl2nnejaev0uc"
+      , "pool1qqqqqdk4zhsjuxxd8jyvwncf5eucfskz0xjjj64fdmlgj735lr9"
+      ]
+    }
+
+  , "ProtocolMagicId":
+    { "type": "integer"
+    , "examples":
+      [ 764824073
+      ]
+    }
+
+  , "ProtocolParameters[Byron]":
+    { "type": "object"
+    , "additionalProperties": true
+    , "properties":
+      { "scriptVersion": { "$ref": "#/definitions/NullableInteger" }
+      , "slotDuration": { "$ref": "#/definitions/NullableInteger" }
+      , "maxBlockSize": { "$ref": "#/definitions/NullableInteger" }
+      , "maxHeaderSize": { "$ref": "#/definitions/NullableInteger" }
+      , "maxProposalSize": { "$ref": "#/definitions/NullableInteger" }
+      , "mpcThreshold": { "$ref": "#/definitions/NullableRatio" }
+      , "heavyDlgThreshold": { "$ref": "#/definitions/NullableRatio" }
+      , "updateVoteThreshold": { "$ref": "#/definitions/NullableRatio" }
+      , "updateProposalTimeToLive": { "$ref": "#/definitions/NullableInteger" }
+      , "unlockStakeEpoch": { "$ref": "#/definitions/NullableInteger" }
+      , "txFeePolicy":
+        { "oneOf":
+          [ { "$ref": "#/definitions/TxFeePolicy" }
+          , { "type": "null", "title": "null" }
+          ]
+        }
+      , "softforkRule":
+        { "oneOf":
+          [ { "$ref": "#/definitions/SoftForkRule" }
+          , { "type": "null", "title": "null" }
+          ]
+        }
+      }
+    }
+
+  , "ProtocolParameters[Shelley]":
+    { "type": "object"
+    , "additionalProperties": false
+    , "properties":
+      { "minFeeCoefficient": { "$ref": "#/definitions/NullableInteger" }
+      , "minFeeConstant": { "$ref": "#/definitions/NullableInteger" }
+      , "maxBlockBodySize": { "$ref": "#/definitions/NullableInteger" }
+      , "maxBlockHeaderSize": { "$ref": "#/definitions/NullableInteger" }
+      , "maxTxSize": { "$ref": "#/definitions/NullableInteger" }
+      , "stakeKeyDeposit": { "$ref": "#/definitions/NullableInteger" }
+      , "poolDeposit": { "$ref": "#/definitions/NullableInteger" }
+      , "poolRetirementEpochBound": { "$ref": "#/definitions/NullableInteger" }
+      , "desiredNumberOfPools": { "$ref": "#/definitions/NullableInteger" }
+      , "poolInfluence": { "$ref": "#/definitions/NullableRatio" }
+      , "monetaryExpansion": { "$ref": "#/definitions/NullableRatio" }
+      , "treasuryExpansion": { "$ref": "#/definitions/NullableRatio" }
+      , "decentralizationParameter": { "$ref": "#/definitions/NullableRatio" }
+      , "minUtxoValue": { "$ref": "#/definitions/NullableInteger" }
+      , "minPoolCost": { "$ref": "#/definitions/NullableInteger" }
+      , "extraEntropy":
+        { "oneOf":
+          [ { "$ref": "#/definitions/Nonce" }
+          , { "type": "null", "title": "null" }
+          ]
+        }
+      , "protocolVersion":
+        { "oneOf":
+          [ { "$ref": "#/definitions/ProtocolVersion" }
+          , { "type": "null", "title": "null" }
+          ]
+        }
+      }
+    }
+
+  , "ProtocolVersion":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "major", "minor" ]
+    , "properties":
+      { "major": { "type": "integer" }
+      , "minor": { "type": "integer" }
+      , "patch": { "type": "integer" }
+      }
+    }
+
+  , "QueryUnavailableInCurrentEra":
+    { "type": "string"
+    , "description": "The requested query is not available in the current node era. It could be that the node is not fully synced."
+    , "enum": [ "QueryUnavailableInCurrentEra" ]
+    }
+
+  , "Ratio":
+    { "type": "string"
+    , "description": "A ratio of two integers, to express exact fractions."
+    , "pattern": "^-?[0-9]+/[0-9]+$"
+    , "examples":
+      [ "2/3"
+      , "7/8"
+      ]
+    }
+
+  , "RelativeTime":
+    { "type": "string"
+    , "description": "A time in seconds relative to the system start."
+    , "pattern": "^[0-9]+.[0-9]+s$"
+    , "examples":
+      [ "3441.33s"
+      ]
+    }
+
+  , "Relay":
+    { "oneOf":
+      [ { "type": "object"
+        , "title": "by address"
+        , "additionalProperties": false
+        , "required": ["ipv4","ipv6","port"]
+        , "properties":
+          { "ipv4":
+            { "oneOf":
+              [ { "type": "string", "title": "ip" }
+              , { "type": "null", "title": "null" }
+              ]
+            }
+          , "ipv6":
+            { "oneOf":
+              [ { "type": "string", "title": "ip" }
+              , { "type": "null", "title": "null" }
+              ]
+            }
+          , "port": { "$ref": "#/definitions/NullableInteger" }
+          }
+        }
+      , { "type": "object"
+        , "title": "by name"
+        , "additionalProperties": false
+        , "required": ["hostname","port"]
+        , "properties":
+          { "hostname": { "type": "string" }
+          , "port": { "$ref": "#/definitions/NullableInteger" }
+          }
+        }
+      ]
+    }
+
+  , "Rewards":
+    { "type": "object"
+    , "additionalProperties": { "$ref": "#/definitions/LovelaceDelta" }
+    , "propertyNames": "[0-9a-f]{56}$"
+    , "examples":
+      [ { "6d06fe0a5a8cb6d2bcc352581dea626bb5b2f66edf85678b2f2fa7b5": 123456789
+        }
+      ]
+    }
+
+  , "RewardAccount":
+    { "type": "string"
+    , "description": "A reward account, also known as 'stake address'."
+    , "contentEncoding": "bech32"
+    , "pattern": "^stake(_test)?1[0-9a-z]+$"
+    , "examples":
+      [ "stake1ux7pt9adw8z46tgqn2f8fvurrhk325gcm4mf75mkmmxpx6gae9mzv"
+      ]
+    }
+
+  , "RewardPot":
+    { "type": "string"
+    , "description": "Source of rewards as defined by the protocol parameters."
+    , "enum": ["reserves", "treasury"]
+    }
+
+  , "Script":
+    { "oneOf":
+      [ { "type": "object"
+        , "title": "Native"
+        , "additionalProperties": false
+        , "required": [ "native" ]
+        , "properties":
+          { "native": { "$ref": "#/definitions/Script[Native]" }
+          }
+        }
+      , { "type": "object"
+        , "title": "Plutus"
+        , "additionalProperties": false
+        , "required": [ "plutus" ]
+        , "properties":
+          { "plutus": { "$ref": "#/definitions/Script[Plutus]" }
+          }
+        }
+      ]
+    }
+
+  , "Script[Native]":
+    { "description": "A phase-1 monetary script. Timelocks constraints are only supported since Allegra."
+    , "examples":
+        [ "3c07030e36bfff7cd2f004356ef320f3fe3c07030e7cd2f004356437"
+        , { "all":
+            [ "ec09e5293d384637cd2f004356ef320f3fe3c07030e36bfffe67e2e2"
+            , "3c07030e36bfff7cd2f004356ef320f3fe3c07030e7cd2f004356437"
+            ]
+          }
+        , { "any":
+            [ "3c07030e36bfffe67e2e2ec09e5293d384637cd2f004356ef320f3fe"
+            , { "all":
+                [ "ec09e5293d384637cd2f004356ef320f3fe3c07030e36bfffe67e2e2"
+                , "3c07030e36bfff7cd2f004356ef320f3fe3c07030e7cd2f004356437"
+                , { "expiresAt": 1234 }
+                ]
+              }
+            , { "2":
+                [ "ec09e5293d384637cd2f004356ef320f3fe3c07030e36bfffe67e2e2"
+                , "3c07030e36bfff7cd2f004356ef320f3fe3c07030e7cd2f004356437"
+                , { "all":
+                    [ "3c07030e36bfffe67e2e2ec09e5293d384637cd2f004356ef320f3fe"
+                    , { "startsAt": 5436 }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+    , "anyOf":
+      [ { "$ref": "#/definitions/Hash16" }
+      , { "type": "object"
+        , "title": "any"
+        , "additionalProperties": false
+        , "required": ["any"]
+        , "properties":
+          { "any":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/Script[Native]" }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "all"
+        , "additionalProperties": false
+        , "required": ["all"]
+        , "properties":
+          { "all":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/Script[Native]" }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "NOf"
+        , "propertyNames": { "pattern": "^[0-9]+$" }
+        , "additionalProperties":
+          { "type": "array"
+          , "items": { "$ref": "#/definitions/Script[Native]" }
+          }
+        }
+      , { "type": "object"
+        , "title": "expiresAt"
+        , "additionalProperties": false
+        , "required": [ "expiresAt" ]
+        , "properties":
+          { "expiresAt": { "$ref": "#/definitions/Slot" }
+          }
+        }
+      , { "type": "object"
+        , "title": "startsAt"
+        , "additionalProperties": false
+        , "required": [ "startsAt" ]
+        , "properties":
+          { "startsAt": { "$ref": "#/definitions/Slot" }
+          }
+        }
+      ]
+    }
+
+  , "Script[Plutus]":
+    { "type": "string"
+    , "description": "A phase-2 Plutus script; or said differently, a serialized Plutus-core program."
+    , "contentEncoding": "base64"
+    , "pattern": "^[A-Za-z0-9+/]*=?=?$"
+    }
+
+  , "Signature":
+    { "type": "object"
+    , "additionalProperties": { "$ref": "#/definitions/Hash64" }
+    , "propertyNames": { "contentEncoding": "base16", "pattern": "^[0-9a-f]+$" }
+    }
+
+  , "Slot":
+    { "type": "integer"
+    , "minimum": 0
+    }
+
+  , "SoftwareVersion":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "appName", "number" ]
+    , "properties":
+      { "appName": { "type": "string" }
+      , "number": { "type": "integer" }
+      }
+    }
+
+  , "SoftForkRule":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "initThreshold", "minThreshold", "decrementThreshold" ]
+    , "properties":
+      { "initThreshold": { "$ref": "#/definitions/NullableRatio" }
+      , "minThreshold": { "$ref": "#/definitions/NullableRatio" }
+      , "decrementThreshold": { "$ref": "#/definitions/NullableRatio" }
+      }
+    }
+
+  , "SubmitTxError[Byron]":
+    { "type": "object"
+    , "oneOf":
+      [ { "additionalProperties": false
+        , "title": "utxoValidationError"
+        , "required": [ "utxoValidationError" ]
+        , "properties":
+          { "utxoValidationError": { "$ref": "#/definitions/UtxoValidationError" }
+          }
+        }
+      , { "additionalProperties": false
+        , "title": "txValidationError"
+        , "required": [ "txValidationError" ]
+        , "properties":
+          { "txValidationError": { "$ref": "#/definitions/TxValidationError" }
+          }
+        }
+      ]
+    }
+
+  , "SubmitTxError[Shelley]":
+    { "type": "array"
+    , "items":
+      { "oneOf":
+        [ { "$ref": "#/definitions/SubmitTxError[invalidWitnesses]" }
+        , { "$ref": "#/definitions/SubmitTxError[missingVkWitnesses]" }
+        , { "$ref": "#/definitions/SubmitTxError[missingScriptWitnesses]" }
+        , { "$ref": "#/definitions/SubmitTxError[scriptWitnessNotValidating]" }
+        , { "$ref": "#/definitions/SubmitTxError[insufficientGenesisSignatures]" }
+        , { "$ref": "#/definitions/SubmitTxError[missingTxMetadata]" }
+        , { "$ref": "#/definitions/SubmitTxError[missingTxMetadataHash]" }
+        , { "$ref": "#/definitions/SubmitTxError[txMetadataHashMismatch]" }
+        , { "$ref": "#/definitions/SubmitTxError[badInputs]" }
+        , { "$ref": "#/definitions/SubmitTxError[expiredUtxo]" }
+        , { "$ref": "#/definitions/SubmitTxError[outsideOfValidityInterval]" }
+        , { "$ref": "#/definitions/SubmitTxError[txTooLarge]" }
+        , { "$ref": "#/definitions/SubmitTxError[missingAtLeastOneInputUtxo]" }
+        , { "$ref": "#/definitions/SubmitTxError[invalidMetadata]" }
+        , { "$ref": "#/definitions/SubmitTxError[feeTooSmall]" }
+        , { "$ref": "#/definitions/SubmitTxError[valueNotConserved]" }
+        , { "$ref": "#/definitions/SubmitTxError[networkMismatch]" }
+        , { "$ref": "#/definitions/SubmitTxError[outputTooSmall]" }
+        , { "$ref": "#/definitions/SubmitTxError[tooManyAssetsInOutput]" }
+        , { "$ref": "#/definitions/SubmitTxError[addressAttributesTooLarge]" }
+        , { "$ref": "#/definitions/SubmitTxError[triesToForgeAda]" }
+        , { "$ref": "#/definitions/SubmitTxError[delegateNotRegistered]" }
+        , { "$ref": "#/definitions/SubmitTxError[unknownOrIncompleteWithdrawals]" }
+        , { "$ref": "#/definitions/SubmitTxError[stakePoolNotRegistered]" }
+        , { "$ref": "#/definitions/SubmitTxError[wrongRetirementEpoch]" }
+        , { "$ref": "#/definitions/SubmitTxError[wrongPoolCertificate]" }
+        , { "$ref": "#/definitions/SubmitTxError[stakeKeyAlreadyRegistered]" }
+        , { "$ref": "#/definitions/SubmitTxError[poolCostTooSmall]" }
+        , { "$ref": "#/definitions/SubmitTxError[stakeKeyNotRegistered]" }
+        , { "$ref": "#/definitions/SubmitTxError[rewardAccountNotExisting]" }
+        , { "$ref": "#/definitions/SubmitTxError[rewardAccountNotEmpty]" }
+        , { "$ref": "#/definitions/SubmitTxError[wrongCertificateType]" }
+        , { "$ref": "#/definitions/SubmitTxError[unknownGenesisKey]" }
+        , { "$ref": "#/definitions/SubmitTxError[alreadyDelegating]" }
+        , { "$ref": "#/definitions/SubmitTxError[insufficientFundsForMir]" }
+        , { "$ref": "#/definitions/SubmitTxError[tooLateForMir]" }
+        , { "$ref": "#/definitions/SubmitTxError[mirTransferNotCurrentlyAllowed]" }
+        , { "$ref": "#/definitions/SubmitTxError[mirNegativeTransferNotCurrentlyAllowed]" }
+        , { "$ref": "#/definitions/SubmitTxError[mirProducesNegativeUpdate]" }
+        , { "$ref": "#/definitions/SubmitTxError[duplicateGenesisVrf]" }
+        , { "$ref": "#/definitions/SubmitTxError[nonGenesisVoters]" }
+        , { "$ref": "#/definitions/SubmitTxError[updateWrongEpoch]" }
+        , { "$ref": "#/definitions/SubmitTxError[protocolVersionCannotFollow]" }
+        ]
+      }
+    }
+
+  , "SubmitTxError[invalidWitnesses]":
+    { "type": "object"
+    , "title": "invalidWitnesses"
+    , "additionalProperties": false
+    , "required": ["invalidWitnesses"]
+    , "properties":
+      { "invalidWitnesses":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Hash16" }
+        }
+      }
+    }
+
+  , "SubmitTxError[missingVkWitnesses]":
+    { "type": "object"
+    , "title": "missingVkWitnesses"
+    , "additionalProperties": false
+    , "required": [ "missingVkWitnesses" ]
+    , "properties":
+      { "missingVkWitnesses":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Hash16" }
+        }
+      }
+    }
+
+  , "SubmitTxError[missingScriptWitnesses]":
+    { "type": "object"
+    , "title": "missingScriptWitnesses"
+    , "additionalProperties": false
+    , "required": [ "missingScriptWitnesses" ]
+    , "properties":
+      { "missingScriptWitnesses":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Hash16" }
+        }
+      }
+    }
+
+  , "SubmitTxError[scriptWitnessNotValidating]":
+    { "type": "object"
+    , "title": "scriptWitnessNotValidating"
+    , "additionalProperties": false
+    , "required": [ "scriptWitnessNotValidating" ]
+    , "properties":
+      { "scriptWitnessNotValidating":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Hash16" }
+        }
+      }
+    }
+
+  , "SubmitTxError[insufficientGenesisSignatures]":
+    { "type": "object"
+    , "title": "insufficientGenesisSignatures"
+    , "additionalProperties": false
+    , "required": [ "insufficientGenesisSignatures" ]
+    , "properties":
+      { "insufficientGenesisSignatures":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Hash16" }
+        }
+      }
+    }
+
+  , "SubmitTxError[missingTxMetadata]":
+    { "type": "object"
+    , "title": "missingTxMetadata"
+    , "additionalProperties": false
+    , "required": [ "missingTxMetadata" ]
+    , "properties":
+      { "missingTxMetadata": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[missingTxMetadataHash]":
+    { "type": "object"
+    , "title": "missingTxMetadataHash"
+    , "additionalProperties": false
+    , "required": [ "missingTxMetadataHash" ]
+    , "properties":
+      { "missingTxMetadataHash": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[txMetadataHashMismatch]":
+    { "type": "object"
+    , "title": "txMetadataHashMismatch"
+    , "additionalProperties": false
+    , "required": [ "txMetadataHashMismatch" ]
+    , "properties":
+      { "txMetadataHashMismatch":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "includedHash", "expectedHash" ]
+        , "properties":
+          { "includedHash": { "$ref": "#/definitions/Hash16" }
+          , "expectedHash": { "$ref": "#/definitions/Hash16" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[badInputs]":
+    { "type": "object"
+    , "title": "badInputs"
+    , "additionalProperties": false
+    , "required": [ "badInputs" ]
+    , "properties":
+      { "badInputs":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/TxIn" }
+        }
+      }
+    }
+
+  , "SubmitTxError[expiredUtxo]":
+    { "type": "object"
+    , "title": "expiredUtxo"
+    , "description": "Only in Shelley. Replaced with 'outsideOfValidityInterval' since Allegra."
+    , "additionalProperties": false
+    , "required": [ "expiredUtxo" ]
+    , "properties":
+      { "expiredUtxo":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "currentSlot", "transactionTimeToLive" ]
+        , "properties":
+          { "currentSlot": { "$ref": "#/definitions/Slot" }
+          , "transactionTimeToLive": { "$ref": "#/definitions/Slot" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[outsideOfValidityInterval]":
+    { "type": "object"
+    , "title": "outsideOfValidityInterval"
+    , "description": "Since Allegra. Replaces 'expiredUtxo'."
+    , "additionalProperties": false
+    , "required": [ "outsideOfValidityInterval" ]
+    , "properties":
+      { "outsideOfValidityInterval":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "currentSlot", "interval" ]
+        , "properties":
+          { "currentSlot": { "$ref": "#/definitions/Slot" }
+          , "interval": { "$ref": "#/definitions/ValidityInterval" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[txTooLarge]":
+    { "type": "object"
+    , "title": "txTooLarge"
+    , "additionalProperties": false
+    , "required": [ "txTooLarge" ]
+    , "properties":
+      { "txTooLarge":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "maximumSize", "actualSize" ]
+        , "properties":
+          { "maximumSize": { "type": "integer" }
+          , "actualSize": { "type": "integer" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[missingAtLeastOneInputUtxo]":
+    { "type": "string"
+    , "title": "missingAtLeastOneInputUtxo"
+    , "enum": [ "missingAtLeastOneInputUtxo" ]
+    }
+
+  , "SubmitTxError[invalidMetadata]":
+    { "type": "string"
+    , "title": "invalidMetadata"
+    , "enum": [ "invalidMetadata" ]
+    }
+
+  , "SubmitTxError[feeTooSmall]":
+    { "type": "object"
+    , "title": "feeTooSmall"
+    , "additionalProperties": false
+    , "required": [ "feeTooSmall" ]
+    , "properties":
+      { "feeTooSmall":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "requiredFee", "actualFee" ]
+        , "properties":
+          { "requiredFee": { "$ref": "#/definitions/Lovelace" }
+          , "actualFee": { "$ref": "#/definitions/Lovelace" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[valueNotConserved]":
+    { "type": "object"
+    , "title": "valueNotConserved"
+    , "description": "Returns 'Value' since Mary, and 'LovelaceDelta' before."
+    , "additionalProperties": false
+    , "required": [ "valueNotConserved" ]
+    , "properties":
+      { "valueNotConserved":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "consumed", "produced" ]
+        , "properties":
+          { "consumed":
+            { "oneOf":
+                [ { "$ref": "#/definitions/LovelaceDelta" }
+                , { "$ref": "#/definitions/Value" }
+                ]
+            }
+          , "produced":
+            { "oneOf":
+                [ { "$ref": "#/definitions/LovelaceDelta" }
+                , { "$ref": "#/definitions/Value" }
+                ]
+            }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[networkMismatch]":
+    { "type": "object"
+    , "title": "networkMismatch"
+    , "additionalProperties": false
+    , "required": [ "networkMismatch" ]
+    , "properties":
+      { "networkMismatch":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "expectedNetwork", "invalidEntities" ]
+        , "properties":
+          { "expectedNetwork": { "$ref": "#/definitions/Network" }
+          , "invalidEntities":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/InvalidEntity" }
+            }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[outputTooSmall]":
+    { "type": "object"
+    , "title": "outputTooSmall"
+    , "description": "Returns 'TxOut[Mary]' since Mary, and 'TxOut' before."
+    , "additionalProperties": false
+    , "required": [ "outputTooSmall" ]
+    , "properties":
+      { "outputTooSmall":
+        { "type": "array"
+        , "items":
+          { "oneOf":
+              [ { "$ref": "#/definitions/TxOut" }
+              , { "$ref": "#/definitions/TxOut[Mary]" }
+              ]
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[tooManyAssetsInOutput]":
+    { "type": "object"
+    , "title": "tooManyAssetsInOutput"
+    , "description": "Only since Mary."
+    , "additionalProperties": false
+    , "required": [ "tooManyAssetsInOutput" ]
+    , "properties":
+      { "tooManyAssetsInOutput":
+        { "type": "array"
+        , "items":
+          { "oneOf":
+              [ { "$ref": "#/definitions/TxOut" }
+              , { "$ref": "#/definitions/TxOut[Mary]" }
+              ]
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[addressAttributesTooLarge]":
+    { "type": "object"
+    , "title": "addressAttributesTooLarge"
+    , "additionalProperties": false
+    , "required": [ "addressAttributesTooLarge" ]
+    , "properties":
+      { "addressAttributesTooLarge":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/Address" }
+        }
+      }
+    }
+
+  , "SubmitTxError[triesToForgeAda]":
+    { "type": "string"
+    , "title": "triesToForgeAda"
+    , "description": "Only since Mary."
+    , "enum": [ "triesToForgeAda" ]
+    }
+
+  , "SubmitTxError[delegateNotRegistered]":
+    { "type": "object"
+    , "title": "delegateNotRegistered"
+    , "additionalProperties": false
+    , "required": [ "delegateNotRegistered" ]
+    , "properties":
+      { "delegateNotRegistered": { "$ref": "#/definitions/PoolId" }
+      }
+    }
+
+  , "SubmitTxError[unknownOrIncompleteWithdrawals]":
+    { "type": "object"
+    , "title": "unknownOrIncompleteWithdrawals"
+    , "additionalProperties": false
+    , "required": [ "unknownOrIncompleteWithdrawals" ]
+    , "properties":
+      { "unknownOrIncompleteWithdrawals": { "$ref": "#/definitions/Withdrawals" }
+      }
+    }
+
+  , "SubmitTxError[stakePoolNotRegistered]":
+    { "type": "object"
+    , "title": "stakePoolNotRegistered"
+    , "additionalProperties": false
+    , "required": [ "stakePoolNotRegistered" ]
+    , "properties":
+      { "stakePoolNotRegistered": { "$ref": "#/definitions/PoolId" }
+      }
+    }
+
+  , "SubmitTxError[wrongRetirementEpoch]":
+    { "type": "object"
+    , "title": "wrongRetirementEpoch"
+    , "additionalProperties": false
+    , "required": [ "wrongRetirementEpoch" ]
+    , "properties":
+      { "wrongRetirementEpoch":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "currentEpoch", "requestedEpoch", "firstUnreachableEpoch" ]
+        , "properties":
+          { "currentEpoch": { "$ref": "#/definitions/Epoch" }
+          , "requestedEpoch": { "$ref": "#/definitions/Epoch" }
+          , "firstUnreachableEpoch": { "$ref": "#/definitions/Epoch" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[wrongPoolCertificate]":
+    { "type": "object"
+    , "title": "wrongPoolCertificate"
+    , "additionalProperties": false
+    , "required": ["wrongPoolCertificate"]
+    , "properties":
+      { "wrongPoolCertificate": { "type": "integer" }
+      }
+    }
+
+  , "SubmitTxError[stakeKeyAlreadyRegistered]":
+    { "type": "object"
+    , "title": "stakeKeyAlreadyRegistered"
+    , "additionalProperties": false
+    , "required": [ "stakeKeyAlreadyRegistered" ]
+    , "properties":
+      { "stakeKeyAlreadyRegistered": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[poolCostTooSmall]":
+    { "type": "object"
+    , "title": "poolCostTooSmall"
+    , "additionalProperties": false
+    , "required": [ "poolCostTooSmall" ]
+    , "properties":
+      { "poolCostTooSmall":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "minimumCost" ]
+        , "properties":
+          { "minimumCost": { "$ref": "#/definitions/Lovelace" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[stakeKeyNotRegistered]":
+    { "type": "object"
+    , "title": "stakeKeyNotRegistered"
+    , "additionalProperties": false
+    , "required": [ "stakeKeyNotRegistered" ]
+    , "properties":
+      { "stakeKeyNotRegistered": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[rewardAccountNotExisting]":
+    { "type": "string"
+    , "title": "rewardAccountNotExisting"
+    , "enum": [ "rewardAccountNotExisting" ]
+    }
+
+  , "SubmitTxError[rewardAccountNotEmpty]":
+    { "type": "object"
+    , "title": "rewardAccountNotEmpty"
+    , "additionalProperties": false
+    , "required": [ "rewardAccountNotEmpty" ]
+    , "properties":
+      { "rewardAccountNotEmpty":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "balance" ]
+        , "properties":
+          { "balance": { "$ref": "#/definitions/Lovelace" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[wrongCertificateType]":
+    { "type": "string"
+    , "title": "wrongCertificateType"
+    , "enum": [ "wrongCertificateType" ]
+    }
+
+  , "SubmitTxError[unknownGenesisKey]":
+    { "type": "object"
+    , "title": "unknownGenesisKey"
+    , "additionalProperties": false
+    , "required": [ "unknownGenesisKey" ]
+    , "properties":
+      { "unknownGenesisKey": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[alreadyDelegating]":
+    { "type": "object"
+    , "title": "alreadyDelegating"
+    , "additionalProperties": false
+    , "required": [ "alreadyDelegating" ]
+    , "properties":
+      { "alreadyDelegating": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[insufficientFundsForMir]":
+    { "type": "object"
+    , "title": "insufficientFundsForMir"
+    , "additionalProperties": false
+    , "required": [ "insufficientFundsForMir" ]
+    , "properties":
+      { "insufficientFundsForMir":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "rewardSource", "sourceSize", "requestedAmount" ]
+        , "properties":
+          { "rewardSource": { "$ref": "#/definitions/RewardPot" }
+          , "sourceSize": { "$ref": "#/definitions/Lovelace" }
+          , "requestedAmount": { "$ref": "#/definitions/Lovelace" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[tooLateForMir]":
+    { "type": "object"
+    , "title": "tooLateForMir"
+    , "additionalProperties": false
+    , "required": [ "tooLateForMir" ]
+    , "properties":
+      { "tooLateForMir":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "currentSlot", "lastAllowedSlot" ]
+        , "properties":
+          { "currentSlot": { "$ref": "#/definitions/Slot" }
+          , "lastAllowedSlot": { "$ref": "#/definitions/Slot" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[mirTransferNotCurrentlyAllowed]":
+    { "type": "string"
+    , "title": "mirTransferNotCurrentlyAllowed"
+    , "enum": [ "mirTransferNotCurrentlyAllowed" ]
+    }
+
+  , "SubmitTxError[mirNegativeTransferNotCurrentlyAllowed]":
+    { "type": "string"
+    , "title": "mirNegativeTransferNotCurrentlyAllowed"
+    , "enum": [ "mirNegativeTransferNotCurrentlyAllowed" ]
+    }
+
+  , "SubmitTxError[mirProducesNegativeUpdate]":
+    { "type": "string"
+    , "title": "mirProducesNegativeUpdate"
+    , "enum": [ "mirProducesNegativeUpdate" ]
+    }
+
+  , "SubmitTxError[duplicateGenesisVrf]":
+    { "type": "object"
+    , "title": "duplicateGenesisVrf"
+    , "additionalProperties": false
+    , "required": [ "duplicateGenesisVrf" ]
+    , "properties":
+      { "duplicateGenesisVrf": { "$ref": "#/definitions/Hash16" }
+      }
+    }
+
+  , "SubmitTxError[nonGenesisVoters]":
+    { "type": "object"
+    , "title": "nonGenesisVoters"
+    , "additionalProperties": false
+    , "required": [ "nonGenesisVoters" ]
+    , "properties":
+      { "nonGenesisVoters":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "currentlyVoting", "shouldBeVoting" ]
+        , "properties":
+          { "currentlyVoting":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/Hash16" }
+            }
+          , "shouldBeVoting":
+            { "type": "array"
+            , "items": { "$ref": "#/definitions/Hash16" }
+            }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[updateWrongEpoch]":
+    { "type": "object"
+    , "title": "updateWrongEpoch"
+    , "additionalProperties": false
+    , "required": [ "updateWrongEpoch" ]
+    , "properties":
+      { "updateWrongEpoch":
+        { "type": "object"
+        , "additionalProperties": false
+        , "required": [ "currentEpoch", "requestedEpoch", "votingPeriod" ]
+        , "properties":
+          { "currentEpoch": { "$ref": "#/definitions/Epoch" }
+          , "requestedEpoch": { "$ref": "#/definitions/Epoch" }
+          , "votingPeriod": { "$ref": "#/definitions/VotingPeriod" }
+          }
+        }
+      }
+    }
+
+  , "SubmitTxError[protocolVersionCannotFollow]":
+    { "type": "object"
+    , "title": "protocolVersionCannotFollow"
+    , "additionalProperties": false
+    , "required": [ "protocolVersionCannotFollow" ]
+    , "properties":
+      { "protocolVersionCannotFollow": { "$ref": "#/definitions/ProtocolVersion" }
+      }
+    }
+
+  , "Tip":
+    { "oneOf":
+      [ { "type": "object"
+        , "title": "tip"
+        , "additionalProperties": false
+        , "required": [ "slot", "hash", "blockNo" ]
+        , "properties":
+          { "slot": { "$ref": "#/definitions/Slot" }
+          , "hash": { "$ref": "#/definitions/Hash16" }
+          , "blockNo": { "$ref": "#/definitions/BlockNo" }
+          }
+        }
+      , { "type": "string"
+        , "title": "origin"
+        , "enum": [ "origin" ]
+        }
+      ]
+    }
+
+  , "Tx":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "inputs", "outputs" ]
+    , "properties":
+      { "inputs":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/TxIn" }
+        }
+      , "outputs":
+        { "type": "array"
+        , "items": { "$ref": "#/definitions/TxOut" }
+        }
+      }
+    }
+
+  , "TxFeePolicy":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "coefficient", "constant" ]
+    , "properties":
+      { "coefficient": { "$ref": "#/definitions/Ratio" }
+      , "constant": { "type": "number" }
+      }
+    }
+
+  , "TxIn":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "txId", "index" ]
+    , "properties":
+      { "txId": { "$ref": "#/definitions/Hash16" }
+      , "index":
+        { "type": "integer"
+        , "minimum": 0
+        }
+      }
+    }
+
+  , "TxOut":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "address", "value" ]
+    , "properties":
+      { "address": { "$ref": "#/definitions/Address" }
+      , "value": { "$ref": "#/definitions/Lovelace" }
+      }
+    }
+
+  , "TxOut[Mary]":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "address", "value" ]
+    , "properties":
+      { "address": { "$ref": "#/definitions/Address" }
+      , "value": { "$ref": "#/definitions/Value" }
+      }
+    }
+
+  , "TxValidationError":
+    { "oneOf":
+      [ { "type": "string"
+        , "title": "unknownAttributes"
+        , "enum": [ "unknownAttributes", "unknownAddressAttributes" ]
+        }
+      , { "type": "object"
+        , "title": "feeTooSmall"
+        , "additionalProperties": false
+        , "required": [ "feeTooSmall" ]
+        , "properties":
+          { "feeTooSmall":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "tx", "requiredFee", "actualFee" ]
+            , "properties":
+              { "tx": { "$ref": "#/definitions/Tx" }
+              , "requiredFee": { "$ref": "#/definitions/Lovelace" }
+              , "actualFee": { "$ref": "#/definitions/Lovelace" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "txTooLarge"
+        , "additionalProperties": false
+        , "required": [ "txTooLarge" ]
+        , "properties":
+          { "txTooLarge":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "maximumSize", "actualSize" ]
+            , "properties":
+              { "maximumSize": { "type": "integer" }
+              , "actualSize": { "type": "integer" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "missingInput"
+        , "additionalProperties": false
+        , "required": [ "missingInput" ]
+        , "properties":
+          { "missingInput":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "index", "txId" ]
+            , "properties":
+              { "index": { "type": "integer" }
+              , "txId": { "$ref": "#/definitions/Hash16" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "networkMismatch"
+        , "additionalProperties": false
+        , "required": [ "networkMismatch" ]
+        , "properties":
+          { "networkMismatch":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "foundInAddress", "expectedNetwork" ]
+            , "properties":
+              { "foundInAddress": { "$ref": "#/definitions/NetworkMagic" }
+              , "expectedNetwork": { "$ref": "#/definitions/NetworkMagic" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "wrongSignature"
+        , "additionalProperties": false
+        , "required": [ "wrongSignature" ]
+        , "properties":
+          { "wrongSignature":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "witness", "protocolMagic" ]
+            , "properties":
+              { "protocolMagic": { "$ref": "#/definitions/ProtocolMagicId" }
+              , "witness": { "$ref": "#/definitions/TxWitness" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "lovelaceError"
+        , "additionalProperties": false
+        , "required": [ "lovelaceError" ]
+        , "properties":
+          { "lovelaceError":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "error", "label" ]
+            , "properties":
+              { "error": { "$ref": "#/definitions/LovelaceError" }
+              , "label": { "type": "string" }
+              }
+            }
+          }
+        }
+      , { "type": "object"
+        , "title": "wrongKey"
+        , "additionalProperties": false
+        , "required": [ "wrongKey" ]
+        , "properties":
+          { "wrongKey":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "address", "witness" ]
+            , "properties":
+              { "address": { "$ref": "#/definitions/Address" }
+              , "witness": { "$ref": "#/definitions/TxWitness" }
+              }
+            }
+          }
+        }
+      ]
+    }
+
+  , "TxWitness":
+    { "type": "object"
+    , "oneOf":
+      [ { "additionalProperties": false
+        , "title": "witnessVk"
+        , "required": [ "witnessVk" ]
+        , "properties":
+          { "witnessVk":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "key", "signature" ]
+            , "properties":
+              { "key": { "$ref": "#/definitions/Hash16" }
+              , "signature": { "$ref": "#/definitions/Hash64" }
+              }
+            }
+          }
+        }
+      , { "additionalProperties": false
+        , "title": "redeemWitness"
+        , "required": [ "redeemWitness" ]
+        , "properties":
+          { "redeemWitness":
+            { "type": "object"
+            , "additionalProperties": false
+            , "required": [ "key", "signature" ]
+            , "properties":
+              { "key": { "$ref": "#/definitions/Hash64" }
+              , "signature": { "$ref": "#/definitions/Hash64" }
+              }
+            }
+          }
+        }
+      ]
+    }
+
+  , "Update[Shelley]":
+    { "oneOf":
+      [ { "type": "null", "title": "null" }
+      , { "type": "object"
+        , "title": "proposal"
+        , "required": ["proposal", "epoch"]
+        , "properties":
+          { "epoch": { "$ref": "#/definitions/Epoch" }
+          , "proposal":
+            { "type": "object"
+            , "additionalProperties": { "$ref": "#/definitions/ProtocolParameters[Shelley]" }
+            }
+          }
+        }
+      ]
+    }
+
+  , "UtcTime":
+    { "type": "string"
+    , "format": "date-time"
+    }
+
+  , "Utxo":
+    { "type": "array"
+    , "additionalItems": false
+    , "items":
+      [ { "$ref": "#/definitions/TxIn" }
+      , { "$ref": "#/definitions/TxOut" }
+      ]
+    }
+
+  , "Utxo[Mary]":
+    { "type": "array"
+    , "additionalItems": false
+    , "items":
+      [ { "$ref": "#/definitions/TxIn" }
+      , { "$ref": "#/definitions/TxOut[Mary]" }
+      ]
+    }
+
+  , "UtxoValidationError":
+    { "oneOf":
+      [ { "type": "string"
+        , "title": "overlappingUnion"
+        , "enum": [ "overlappingUnion" ]
+        }
+      , { "type": "object"
+        , "title": "missingInput"
+        , "additionalProperties": false
+        , "required": [ "missingInput" ]
+        , "properties":
+          { "missingInput": { "$ref": "#/definitions/TxIn" }
+          }
+        }
+      ]
+    }
+
+  , "ValidityInterval":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "invalidBefore", "invalidHereafter" ]
+    , "properties":
+      { "invalidBefore":
+          { "oneOf":
+            [ { "$ref": "#/definitions/Slot" }
+            , { "type": "null", "title": "null" }
+            ]
+          }
+      , "invalidHereafter":
+          { "oneOf":
+            [ { "$ref": "#/definitions/Slot" }
+            , { "type": "null", "title": "null" }
+            ]
+          }
+      }
+    }
+
+  , "Value":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "coins", "assets" ]
+    , "properties":
+      { "coins": { "$ref": "#/definitions/Lovelace" }
+      , "assets":
+        { "type": "object"
+        , "additionalProperties": { "$ref": "#/definitions/AssetQuantity" }
+        }
+      }
+    }
+
+  , "Vote":
+    { "type": "object"
+    , "additionalProperties": false
+    , "required": [ "voterVk", "proposalId", "signature" ]
+    , "properties":
+      { "voterVk": { "$ref": "#/definitions/Hash64" }
+      , "proposalId": { "$ref": "#/definitions/Hash16" }
+      , "signature": { "$ref": "#/definitions/Hash64" }
+      }
+    }
+
+  , "VotingPeriod":
+    { "type": "string"
+    , "enum": [ "voteForThisEpoch", "voteForNextEpoch" ]
+    }
+
+  , "Withdrawals":
+    { "type": "object"
+    , "additionalProperties": { "$ref": "#/definitions/Lovelace" }
+    , "propertyNames": "^stake(_test)?1[0-9a-z]+$"
+    }
+
+  }
+}
