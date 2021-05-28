@@ -1,0 +1,132 @@
+cabal-version: 3.4
+name: hydra-plutus
+version: 0.1.0.0
+description:        Hydra Plutus Contracts
+author:             IOHK
+copyright:          2021 IOHK
+license:            Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+build-type:         Simple
+
+source-repository head
+    type: git
+    location: https://github.com/input-output-hk/hydra-poc
+
+flag development
+     description: Disable -Werror for development
+     default: False
+     manual: True
+
+flag defer-plugin-errors
+    description:
+        Defer errors from the plugin, useful for things like Haddock that can't handle it.
+    default: False
+    manual: True
+
+common project-config
+  default-extensions:
+    BangPatterns
+    BinaryLiterals
+    ConstraintKinds
+    DataKinds
+    DefaultSignatures
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveTraversable
+    DerivingStrategies
+    EmptyDataDecls
+    ExistentialQuantification
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    InstanceSigs
+    KindSignatures
+    LambdaCase
+    MultiParamTypeClasses
+    MultiWayIf
+    NamedFieldPuns
+    NoImplicitPrelude
+    NumericUnderscores
+    OverloadedStrings
+    PartialTypeSignatures
+    PatternGuards
+    RankNTypes
+    ScopedTypeVariables
+    StandaloneDeriving
+    TupleSections
+    TypeFamilies
+    TypeOperators
+    TypeSynonymInstances
+    ViewPatterns
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
+    -Wnoncanonical-monad-instances
+    -fobject-code -fno-ignore-interface-pragmas -fno-omit-interface-pragmas -fno-strictness
+
+  if !flag(development)
+      ghc-options: -Werror
+
+library
+  import: project-config
+  exposed-modules:
+      Hydra.Contract.OnChain
+      Hydra.Contract.OffChain
+  hs-source-dirs: src
+  build-depends:
+      aeson,
+      base,
+      containers,
+      playground-common,
+      plutus-core,
+      plutus-tx,
+      plutus-contract,
+      plutus-ledger,
+      plutus-tx-plugin,
+      template-haskell
+
+  if flag(defer-plugin-errors)
+      ghc-options: -fplugin-opt PlutusTx.Plugin:defer-errors
+
+test-suite hydra-plutus-test
+  import: project-config
+  type: exitcode-stdio-1.0
+  main-is: Test.hs
+  hs-source-dirs: test
+  other-modules:
+      Hydra.ContractTest
+      Hydra.ContractModelTest
+      Hydra.Test.Utils
+  build-depends:
+      base >=4.9 && <5,
+      cardano-prelude,
+      containers,
+      foldl,
+      freer-extras,
+      freer-simple,
+      hydra-plutus,
+      lens,
+      plutus-contract,
+      plutus-core,
+      plutus-ledger,
+      plutus-tx,
+      plutus-tx-plugin,
+      prettyprinter,
+      QuickCheck,
+      streaming,
+      tasty,
+      tasty-expected-failure,
+      tasty-golden,
+      tasty-hunit,
+      tasty-quickcheck,
+      text
