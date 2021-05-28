@@ -1,0 +1,204 @@
+cabal-version: 3.4
+
+name:               hydra-node
+version:            0.1.0
+description:        Hydra node executable (server
+author:             IOHK
+copyright:          2021 IOHK
+license:            Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+build-type:         Simple
+extra-source-files: README.md
+
+source-repository head
+  type: git
+  location: https://github.com/input-output-hk/hydra-node
+
+flag development
+     description: Disable -Werror for development
+     default: False
+     manual: True
+
+common project-config
+  default-language: Haskell2010
+  default-extensions:
+    BangPatterns
+    BinaryLiterals
+    ConstraintKinds
+    DataKinds
+    DefaultSignatures
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveTraversable
+    EmptyDataDecls
+    ExistentialQuantification
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    InstanceSigs
+    KindSignatures
+    LambdaCase
+    MultiParamTypeClasses
+    MultiWayIf
+    NamedFieldPuns
+    NoImplicitPrelude
+    NumericUnderscores
+    OverloadedStrings
+    PartialTypeSignatures
+    PatternGuards
+    RankNTypes
+    ScopedTypeVariables
+    StandaloneDeriving
+    TupleSections
+    TypeFamilies
+    TypeSynonymInstances
+    ViewPatterns
+  ghc-options:
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
+    -Wunused-packages
+
+  if !flag(development)
+      ghc-options: -Werror
+
+library
+  import: project-config
+  hs-source-dirs: src
+  exposed-modules:
+    Hydra.API.Server
+    Hydra.Network
+    Hydra.Network.Ouroboros
+    Hydra.Network.ZeroMQ
+    Hydra.Node
+    Hydra.Ledger
+    Hydra.Ledger.MaryTest
+    Hydra.Ledger.Mock
+    Hydra.Logging
+    Hydra.Logic
+    Hydra.MockZMQChain
+    Network.TypedProtocol.FireForget.Type
+    Network.TypedProtocol.FireForget.Client
+    Network.TypedProtocol.FireForget.Server
+  build-depends:
+      base
+    , async
+    , base
+    , bytestring
+    , cardano-binary
+    , cardano-ledger-shelley-ma
+    , cardano-ledger-shelley-ma-test
+    , cardano-prelude
+    , cardano-slotting
+    , cborg
+    , containers
+    , contra-tracer
+    , data-default
+    , io-sim-classes
+    , iohk-monitoring
+    , network
+    , network-mux
+    , ouroboros-network-framework
+    , safe-exceptions
+    , serialise
+    , shelley-spec-ledger
+    , shelley-spec-ledger-test
+    , stm
+    , text
+    , typed-protocols
+    , typed-protocols-examples
+    , websockets
+    , zeromq4-haskell
+  ghc-options:
+    -haddock
+
+executable hydra-node
+  import: project-config
+  hs-source-dirs: exe/hydra-node
+  main-is: Main.hs
+  build-depends:
+      base
+    , cardano-prelude
+    , hydra-node
+    , optparse-applicative
+    , stm
+  ghc-options:
+    -threaded
+    -rtsopts
+
+executable mock-chain
+  import: project-config
+  hs-source-dirs: exe/mock-chain
+  main-is: Main.hs
+  build-depends:
+      base
+    , cardano-prelude
+    , hydra-node
+    , optparse-applicative
+    , text
+  ghc-options:
+    -threaded
+    -rtsopts
+
+test-suite tests
+  import: project-config
+  hs-source-dirs: test
+  other-modules:
+    Hydra.NetworkSpec
+    Hydra.NodeSpec
+    Hydra.LedgerSpec
+    Hydra.FireForgetSpec
+    Hydra.MockZMQChainSpec
+  main-is: Main.hs
+  type: exitcode-stdio-1.0
+  build-depends:
+      base
+    , cardano-binary
+    , cardano-prelude
+    , cborg
+    , containers
+    , contra-tracer
+    , hspec
+    , hspec-core
+    , hydra-node
+    , io-sim
+    , io-sim-classes
+    , QuickCheck
+    , serialise
+    , typed-protocols-examples
+  build-tool-depends:
+    hspec-discover:hspec-discover
+  ghc-options:
+    -threaded
+    -rtsopts
+
+test-suite integration
+  import: project-config
+  hs-source-dirs: integration
+  other-modules:
+    IntegrationSpec
+  main-is: Main.hs
+  type: exitcode-stdio-1.0
+  build-depends:
+      base
+    , cardano-prelude
+    , hspec
+    , hspec-core
+    , hydra-node
+    , iohk-monitoring
+    , io-sim-classes
+    , stm
+  build-tool-depends:
+    hspec-discover:hspec-discover
+  ghc-options:
+    -threaded
+    -rtsopts
