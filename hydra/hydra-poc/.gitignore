@@ -1,0 +1,23 @@
+### Cabal ###
+.ghc.environment.*
+/cabal.project.diff
+/cabal.project.local
+/cabal.project.old
+/dist-newstyle/
+
+### Haskell ###
+*.eventlog
+*.hp
+*.prof
+
+### Nix ###
+result*
+
+### Direnv ###
+.direnv/
+*~
+
+### hydra-node ###
+.history
+*.hi
+*.o
