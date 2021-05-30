@@ -1,0 +1,45 @@
+{
+  "name": "1155-to-20",
+  "version": "1.0.2",
+  "description": "ERC 1155 to ERC 20 converter",
+  "main": "index.js",
+  "scripts": {
+    "prepack": "truffle compile --all && truffle run load-networks && truffle networks --clean",
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gnosis/1155-to-20.git"
+  },
+  "keywords": [
+    "ethereum",
+    "smart",
+    "contract",
+    "token",
+    "adapter",
+    "erc-1155",
+    "erc-20",
+    "converter"
+  ],
+  "author": "",
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/gnosis/1155-to-20/issues"
+  },
+  "homepage": "https://github.com/gnosis/1155-to-20#readme",
+  "devDependencies": {
+    "1155-to-20-helper": "git@github.com:davidalbela/1155-to-20-helper",
+    "@gnosis.pm/conditional-tokens-contracts": "^1.0.1",
+    "@nomiclabs/buidler": "^1.4.8",
+    "@truffle/hdwallet-provider": "^1.2.6",
+    "chai": "^4.2.0",
+    "chai-bn": "^0.2.1",
+    "dotenv": "^8.2.0",
+    "truffle": "^5.1.65",
+    "truffle-plugin-networks": "^0.1.0",
+    "truffle-plugin-verify": "^0.5.7"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.4.0"
+  }
+}
