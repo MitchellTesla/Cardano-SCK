@@ -1,0 +1,32 @@
+#lang glow
+
+let winner = (handA : Nat, handB : Nat) : Nat => {
+    (handA + (4 - handB)) % 3 };
+
+@interaction([A, B])
+let rockPaperScissors = (wagerAmount) => {
+    @A let handA = input(Nat, "First player, pick your hand: 0 (Rock), 1 (Paper), 2 (Scissors)");
+    @A require! (handA < 3);
+    @A let salt = randomUInt256();
+    @verifiably!(A) let commitment = digest(salt, handA);
+    publish! A -> commitment; deposit! A -> wagerAmount;
+
+    @B let handB = input(Nat, "Second player, pick your hand: 0 (Rock), 1 (Paper), 2 (Scissors)");
+    publish! B -> handB; deposit! B -> wagerAmount;
+    require! (handB < 3);
+
+    publish! A -> salt, handA;
+    require! (handA < 3);
+    verify! commitment;
+    // outcome: 0 (B_Wins), 1 (Draw), 2 (A_Wins)
+    let outcome = winner(handA, handB);
+
+    switch (outcome) {
+      // A_Wins
+      | 2 => withdraw! A <- 2*wagerAmount
+      // B_Wins
+      | 0 => withdraw! B <- 2*wagerAmount
+      // Draw
+      | 1 => withdraw! A <- wagerAmount; withdraw! B <- wagerAmount };
+
+    outcome };
