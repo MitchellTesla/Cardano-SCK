@@ -1,10 +1,13 @@
+The Cardano Full-Node*
+
 Integration of the ledger, consensus, networking and node shell repositories.
 
 Logging is provided as a feature by the node shell to the other packages.
 
 The cardano-node is the top level for the node and aggregates the other components from other packages: consensus, ledger and networking, with configuration, CLI, logging and monitoring.
 The node no longer incorporates wallet or explorer functionality. The wallet backend and explorer backend are separate components that run in separate external processes that communicate with the node via local IPC.
-Network Configuration, Genesis and Topology Files
+
+# Network Configuration, Genesis and Topology Files
 The latest supported networks can be found at https://hydra.iohk.io/job/Cardano/cardano-node/cardano-deployment/latest-finished/download/1/index.html
 
 How to build
@@ -14,14 +17,14 @@ Linux Executable
 You can download the latest version of cardano-node and cardano-cli here.
 
 Windows Executable
-Download
-You can download here.
 
-Instructions
+#  Instructions
+
 The download includes cardano-node.exe and a .dll. To run the node with cardano-node run you need to reference a few files and directories as arguments. These can be copied from the cardano-node repo into the executables directory. The command to run the node on mainnet looks like this:
 
 cardano-node.exe run --topology ./mainnet-topology.json --database-path ./state --port 3001 --config ./configuration-mainnet.yaml --socket-path \\.\pipe\cardano-node
 cardano-node
+
 This refers to the client that is used for running a node.
 
 The general synopsis is as follows:
@@ -49,11 +52,13 @@ Usage: cardano-node run [--topology FILEPATH] [--database-path FILEPATH]
 --port - Specify which port to assign to the node.
 --config - Specify the filepath to the config .yaml file. This file is responsible for all the other node's required settings. See examples in configuration (e.g. config-0.yaml).
 --validate-db - Flag to revalidate all on-disk database files
-Configuration .yaml files
+
+# Configuration .yaml files
 The --config flag points to a .yaml file that is responsible to configuring the logging & other important settings for the node. E.g. see the Byron mainnet configuration in this configuration.yaml. Some of the more important settings are as follows:
 
-Protocol: RealPBFT -- Protocol the node will execute
+# Protocol: RealPBFT -- Protocol the node will execute
 RequiresNetworkMagic: RequiresNoMagic -- Used to distinguish between mainnet (RequiresNoMagic) and testnets (RequiresMagic)
+
 Logging
 Logs are output to the logs/ dir.
 
@@ -65,7 +70,7 @@ Please see scripts/README.md for how to obtain profiling information using the s
 Scripts
 Please see scripts/README.md for information on the various scripts.
 
-cardano-cli
+# cardano-cli
 A CLI utility to support a variety of key material operations (genesis, migration, pretty-printing..) for different system generations. Usage documentation can be found at cardano-cli/README.md.
 
 The general synopsis is as follows:
@@ -97,8 +102,11 @@ Available options:
   --byron-formats          Byron era formats and compatibility
   --to FILEPATH            Non-existent file to write the signing key to.
   -h,--help                Show this help text
-Genesis operations
-Generation
+  
+  
+# Genesis operations
+
+#  Generation
 The Byron genesis generation operations will create a directory that contains:
 
 genesis.json: The genesis JSON file itself.
@@ -139,7 +147,9 @@ $ cabal v2-run -- cardano-cli signing-key-address --byron-formats --secret key0.
 
 2cWKMJemoBakxhXgZSsMteLP9TUvz7owHyEYbUDwKRLsw2UGDrG93gPqmpv1D9ohWNddx
 VerKey address with root e5a3807d99a1807c3f161a1558bcbc45de8392e049682df01809c488, attributes: AddrAttributes { derivation path: {} }
+
 Transactions
+
 Creation
 Transactions can be created via the issue-genesis-utxo-expenditure & issue-utxo-expenditure commands.
 
@@ -199,6 +209,7 @@ cardano-cli -- byron node
                --installer-hash HASH
                --filepath FILEPATH
                ..
+               
 The mandatory arguments are config, signing-key, protocol-version-major, protocol-version-minor, protocol-version-alt, application-name, software-version-num, system-tag, installer-hash and filepath.
 
 The remaining arguments are optional parameters you want to update in your update proposal.
@@ -217,11 +228,12 @@ cardano-cli -- byron node
             --config configuration/defaults/mainnet/configuration.yaml
             --filepath my-update-proposal
             --socket-path socket/0
+            
 The socket path must either be specified as an argument (--socket-path) or specified in the supplied config file.
 
 See the Byron specification for more deatils on update proposals.
 
-Update proposal voting
+# Update proposal voting
 You can create and submit byron update proposal votes with the create-proposal-vote & submit-proposal-vote commands. The following are two example commands:
 
 Byron vote creation:
@@ -238,10 +250,11 @@ cabal exec cardano-cli -- byron node submit-proposal-vote
                        --config  configuration/defaults/liveview/config-0.yaml
                        --filepath UpdateProposalVoteFile
                        --socket-path socket/node-0-socket
-Development
+                       
+# Development
 run ghcid with: ghcid -c "cabal v2-repl exe:cardano-node --reorder-goals"
 
-Testing
+# Testing
 cardano-node is essentially a container which implements several components such networking, consensus, and storage. These components have individual test coverage. The node goes through integration and release testing by Devops/QA while automated CLI tests are ongoing alongside development.
 
 Developers on cardano-node can launch their own testnets or run the chairman tests locally.
@@ -263,13 +276,13 @@ Thanks for your interest in building native tokens on Cardano. To help you get s
 
 Cardano Forum discussion forum
 
-Developer Documentation for Native Tokens
+# Developer Documentation for Native Tokens
 
 Please note that over the holiday period, technical support for the pre-production environment and token builder tool will be extremely limited. Support is unavailable between the dates of 23rd - 27th December and 31 December - 3rd January inclusive. Outside these hours, our technical and community teams will be periodically checking in on the GitHub repo and dedicated Cardano Forum discussion forum, to expedite any urgent queries or requests. We encourage you to draw on community feedback and support as much as possible.
 
 If you require test ada during this period, please fill out this form and you will be sent your test ada. Note that until the wallet backend is fully integrated, this is an essentially manual process and there may therefore be some delay before the request is processed. For technical reasons, it may only be possible to fund newly created addresses that have been properly set up on the Pre-Production Environment. Unfortunately, since the form only records payment addresses, it will not be possible to contact you if the funding attempt fails, or to notify you that it has succeeded. Please check that you have submitted the address correctly, and retry if you need to
 
-API Documentation
+# API Documentation
 The API documentation is published here.
 
 The documentation is built with each push, but is only published from master branch. In order to test if the documentation is working, build the documentation locally with ./scripts/haddocs.sh and open haddocks/index.html in the browser.

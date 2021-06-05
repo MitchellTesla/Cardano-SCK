@@ -1,0 +1,21 @@
+@mixin animated-ellipsis($duration: 900, $width: 20px) {
+  &:after {
+    :local {
+      animation: ellipsis steps(4, end) #{$duration}ms infinite;
+    }
+    content: '\2026'; /* ascii code for the ellipsis character */
+    display: inline-block;
+    margin-right: 0;
+    overflow: hidden;
+    text-align: left;
+    vertical-align: bottom;
+    width: 0;
+  }
+
+  @keyframes :local(ellipsis) {
+    to {
+      margin-right: -$width;
+      width: $width;
+    }
+  }
+}

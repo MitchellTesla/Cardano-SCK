@@ -1,0 +1,131 @@
+cabal-version: 3.4
+
+name:               local-cluster
+version:            0.1.0
+description:        Integration test suite using a local cluster of cardano and hydra nodes
+author:             IOHK
+copyright:          2021 IOHK
+license:            Apache-2.0
+license-files:
+  LICENSE
+  NOTICE
+build-type:         Simple
+extra-source-files: README.md
+
+source-repository head
+  type: git
+  location: https://github.com/input-output-hk/hydra-node
+
+common project-config
+  default-language: Haskell2010
+  default-extensions:
+    BangPatterns
+    BinaryLiterals
+    ConstraintKinds
+    DataKinds
+    DefaultSignatures
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveTraversable
+    EmptyDataDecls
+    ExistentialQuantification
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    InstanceSigs
+    KindSignatures
+    LambdaCase
+    MultiParamTypeClasses
+    MultiWayIf
+    NamedFieldPuns
+    NoImplicitPrelude
+    NumericUnderscores
+    OverloadedStrings
+    PartialTypeSignatures
+    PatternGuards
+    RankNTypes
+    ScopedTypeVariables
+    StandaloneDeriving
+    TupleSections
+    TypeFamilies
+    TypeSynonymInstances
+    ViewPatterns
+  ghc-options:
+    -Werror
+    -Wall
+    -Wcompat
+    -Widentities
+    -Wincomplete-record-updates
+    -Wincomplete-uni-patterns
+    -Wpartial-fields
+    -Wredundant-constraints
+    -Wunused-packages
+
+library
+  import: project-config
+  hs-source-dirs: src
+  exposed-modules:
+    HydraNode
+    Lib
+    Logging
+    Ports
+    Node
+  build-depends:
+      base >=4.7 && <5
+    , aeson
+    , async
+    , bytestring
+    , cardano-prelude
+    , contra-tracer
+    , directory
+    , filepath
+    , hspec-expectations
+    , iohk-monitoring
+    , network
+    , process
+    , random-shuffle
+    , retry
+    , streaming-commons
+    , time
+    , text
+    , unix
+    , unordered-containers
+    , websockets
+  ghc-options:
+    -haddock
+
+executable local-cluster
+  import: project-config
+  hs-source-dirs: exe
+  main-is: local-cluster.hs
+  ghc-options:
+    -threaded
+    -rtsopts
+  build-depends: base >=4.7 && <5
+               , cardano-prelude
+               , local-cluster
+               , temporary
+
+test-suite integration
+  import: project-config
+  hs-source-dirs: test
+  main-is: Main.hs
+  type: exitcode-stdio-1.0
+  other-modules:
+    Test.EndToEndSpec
+    Test.LocalClusterSpec
+  build-depends:
+      base >=4.7 && <5
+    , cardano-prelude
+    , hspec
+    , hspec-core
+    , local-cluster
+    , temporary
+  build-tool-depends:
+    hspec-discover:hspec-discover, hydra-node:hydra-node, hydra-node:mock-chain
+  ghc-options:
+    -threaded
+    -rtsopts

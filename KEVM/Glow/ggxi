@@ -1,0 +1,28 @@
+#!/bin/sh
+# This script starts a Gerbil interpreter with all of Glow loaded,
+# so you can interact with it at the REPL.
+# You can use this file as your M-x run-scheme interpreter
+# by putting a line such as the following one in your .emacs
+# then using e.g. gerbil-mode:
+# (setq scheme-program-name "/home/fare/src/fare/glow/ggxi")
+
+this=$0
+here=$(dirname "$this")
+
+. "$here/env.sh"
+
+case "${1-}" in
+    --swank) swank=(-e "(spawn/name'swank\`,start-swank)") ; shift ;;
+    *) swank=() ;;
+esac
+if [ $# = 0 ] ; then
+    #gerbil_home=${GERBIL_HOME:-$(gxi -e '(display __gx#default-gerbil-home)')}
+    #interaction=("$gerbil_home/lib/init.ss" -)
+    interaction=(-e '(load (path-expand "lib/init.ss" (getenv "GERBIL_HOME" __gx#default-gerbil-home)))' -)
+fi
+command=(
+    gxi
+    "${here}/all-glow.ss"
+    "${swank[@]}" "${interaction[@]}" "$@")
+
+exec "${command[@]}"

@@ -1,0 +1,12 @@
+resolver: resolver.yaml
+
+compiler: ghc-8.10.4 # Simply for reference, already inferred from the resolver.
+
+packages:
+- .
+- modules/cardano-client
+- modules/fast-bech32
+- modules/git-th
+- modules/hspec-json-schema
+- modules/json-wsp
+- modules/json-via-show

@@ -1,0 +1,38 @@
+{
+    "cardano-wallet": {
+        "branch": "master",
+        "description": "Official Wallet Backend & API for Cardano decentralized",
+        "homepage": null,
+        "owner": "input-output-hk",
+        "repo": "cardano-wallet",
+        "rev": "8b57b53ec02ed7b3e1cba4e7e5370fb3a3fd155b",
+        "sha256": "1ng0y6jmcgb3agpqwais1mfx0yh9bqxza3xxkggdzgic89pg6pg1",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/cardano-wallet/archive/8b57b53ec02ed7b3e1cba4e7e5370fb3a3fd155b.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "iohk-nix": {
+        "branch": "master",
+        "description": "nix scripts shared across projects",
+        "homepage": null,
+        "owner": "input-output-hk",
+        "repo": "iohk-nix",
+        "rev": "f345d26508966e434d8db57d6c3b4ce4202c9fb5",
+        "sha256": "1xcar2r6jm68dp5s8kc2rii0rcg47w41qc1akazbngkj1x6hf1r2",
+        "type": "tarball",
+        "url": "https://github.com/input-output-hk/iohk-nix/archive/f345d26508966e434d8db57d6c3b4ce4202c9fb5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "nixpkgs-20.09-darwin",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "08327493801e12217891826604c2812e7f48eb28",
+        "sha256": "1dwgf2jr8p392hqv0fmnngna6a755qg67qxvz2qnp7mhbqy2aggv",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/08327493801e12217891826604c2812e7f48eb28.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

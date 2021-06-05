@@ -1,0 +1,38 @@
+{
+  "name": "@cardano-graphql/util-dev",
+  "version": "4.0.0",
+  "description": "Common development utilities",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -b ./src",
+    "cleanup": "shx rm -rf dist node_modules",
+    "lint": "eslint --ignore-path ../../.eslintignore \"**/*.ts\"",
+    "prepack": "yarn build",
+    "test": "shx echo No tests in this package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/input-output-hk/cardano-graphql.git"
+  },
+  "author": "Rhys Bartels-Waller",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/input-output-hk/cardano-graphql/issues"
+  },
+  "homepage": "https://github.com/input-output-hk/cardano-graphql/blob/master/packages/util-dev/README.md",
+  "devDependencies": {
+    "@cardano-graphql/util": "4.0.0",
+    "shx": "^0.3.2"
+  },
+  "directories": {
+    "lib": "src",
+    "test": "test"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ]
+}

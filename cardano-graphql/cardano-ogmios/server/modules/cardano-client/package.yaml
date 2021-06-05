@@ -1,0 +1,44 @@
+_config: !include "../../.hpack.config.yaml"
+
+name:                cardano-client
+version:             1.0.0
+github:              "KtorZ/cardano-ogmios"
+license:             MPL-2.0
+author:              "KtorZ <matthias.benkort@gmail.com>"
+maintainer:          "matthias.benkort@gmail.com"
+copyright:           "2020-2021 KtorZ"
+description:         Please see the README on GitHub at <https://github.com/KtorZ/cardano-ogmios/tree/master/server/modules/cardano-client>
+synopsis:            Utilities to build a cardano client using the Ouroboros mini-protocols
+category:            Cardano
+
+extra-source-files:
+- LICENSE
+- README.md
+- CHANGELOG.md
+
+dependencies:
+- base >= 4.7 && < 5
+
+default-extensions: *default-extensions
+
+library:
+  source-dirs: src
+  ghc-options: *ghc-options-lib
+  dependencies:
+    - bytestring
+    - cardano-ledger-byron
+    - cborg
+    - containers
+    - contra-tracer
+    - io-sim-classes
+    - iohk-monitoring
+    - network-mux
+    - ouroboros-consensus
+    - ouroboros-consensus-byron
+    - ouroboros-consensus-cardano
+    - ouroboros-consensus-shelley
+    - ouroboros-network
+    - ouroboros-network-framework
+    - typed-protocols-examples
+  build-tools:
+  - hspec-discover

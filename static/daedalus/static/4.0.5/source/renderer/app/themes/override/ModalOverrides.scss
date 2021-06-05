@@ -1,0 +1,25 @@
+@import '../mixins/overlay-backdrop';
+
+.overlay {
+  z-index: 100;
+  @include overlay-backrop;
+}
+
+.modal {
+  display: flex;
+  max-width: 640px;
+
+  :global {
+    .WalletExportDialogChoices_component {
+      & > button {
+        color: var(--theme-dialog-choice-tabs-text-color);
+      }
+
+      & > .WalletExportDialogChoices_activeButton {
+        border-bottom: 2px solid
+          var(--theme-dialog-choice-tabs-bottom-border-color-active);
+        color: var(--theme-dialog-choice-tabs-text-color-active);
+      }
+    }
+  }
+}

@@ -1,0 +1,303 @@
+@import '~react-virtualized/styles.css';
+@import '~react-datetime/css/react-datetime.css';
+@import '~rc-slider/assets/index.css';
+
+// ============ RESET ===========
+// http://meyerweb.com/eric/tools/css/reset
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+// Buttons should not have any special style applied by default
+button {
+  background: none;
+  border: none;
+  padding: 0;
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+// ============ FONTS ===========
+
+@font-face {
+  font-family: 'NotoSans-ExtraLight';
+  src: url('../assets/fonts/NotoSans-ExtraLight.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSans-Thin';
+  src: url('../assets/fonts/NotoSans-Thin.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSansCJKjp-Thin';
+  src: url('../assets/fonts/NotoSansCJKjp-Thin.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NotoSans-Light';
+  src: url('../assets/fonts/NotoSans-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSansCJKjp-Light';
+  src: url('../assets/fonts/NotoSansCJKjp-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NotoSans-Regular';
+  src: url('../assets/fonts/NotoSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSansCJKjp-Regular';
+  src: url('../assets/fonts/NotoSansCJKjp-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NotoSans-Medium';
+  src: url('../assets/fonts/NotoSans-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSansCJKjp-Medium';
+  src: url('../assets/fonts/NotoSansCJKjp-Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NotoSans-SemiBold';
+  src: url('../assets/fonts/NotoSans-SemiBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSans-Bold';
+  src: url('../assets/fonts/NotoSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSansCJKjp-Bold';
+  src: url('../assets/fonts/NotoSansCJKjp-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'NotoSans-ExtraBold';
+  src: url('../assets/fonts/NotoSans-ExtraBold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSans-Black';
+  src: url('../assets/fonts/NotoSans-Black.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'NotoSansCJKjp-Black';
+  src: url('../assets/fonts/NotoSansCJKjp-Black.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Montserrat-Medium';
+  src: url('../assets/fonts/Montserrat-Medium.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SFMono-Light';
+  src: url('../assets/fonts/SFMono-Light.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'SFMonoCJKjp-Light';
+  src: url('../assets/fonts/SFMono-Light.otf') format('opentype');
+}
+
+// ============ BASE ===========
+
+html,
+body,
+body > div:nth-child(1) {
+  height: 100%;
+}
+
+html,
+body,
+#root,
+#root > [data-reactroot] {
+  // Make the default font ugly so we immediately see when something
+  // is not yet defined correctly in our UI
+  font-family: 'Times New Roman', serif;
+  -webkit-font-smoothing: antialiased;
+  height: 100%;
+  user-select: none;
+  width: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// ====== GLOBAL SCROLLBAR STYLE ======
+
+* {
+  &::-webkit-scrollbar {
+    width: 20px;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: block;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-clip: content-box;
+    background-color: var(--theme-scrollbar-thumb-background);
+    border: 8px solid transparent;
+    border-radius: 10px;
+    &:vertical {
+      min-height: 30px;
+    }
+    &:hover {
+      background-color: var(--rp-scrollbar-thumb-bg-color-hover);
+    }
+  }
+}
+
+// ====== GLOBAL NUMBER INPUT STYLE ======
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+// General text formatting
+
+strong {
+  font-family: var(--font-medium);
+}
