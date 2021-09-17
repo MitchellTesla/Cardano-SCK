@@ -20,7 +20,7 @@ Plutus Core will be used to define the parameters of these EUTXO transactions an
 
 Cardano launched native tokens on 03-01-2021 ‘Mary’ upgrade to allow users to create uniquely defined custom tokens and carry out transactions with them. Plutus will expand on current token capabilities, vastly improving minting policies which will be beneficial for NFTs which may need time locks.
 
-# Cardano Alonzo Upgrade - Successful (09-12-2021)
+# Alonzo Upgrade - Successful (09-12-2021)
 Plutus is part of the Alonzo upgrade, a major upgrade stage on the Cardano roadmap which introduces smart contracts and the ability to build dapps. In an earlier blog post, the team hinted at a timeline:
 
 <p align="center">
