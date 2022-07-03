@@ -16,7 +16,7 @@
     "@emurgo/cardano-serialization-lib-nodejs": "2.0.0",
     "@types/node": "14.14.10",
     "@types/temp-write": "4.0.0",
-    "axios": "0.21.1",
+    "axios": "0.21.2",
     "delay": "4.4.0",
     "express": "^4.17.1",
     "express-validator": "^6.10.0",
