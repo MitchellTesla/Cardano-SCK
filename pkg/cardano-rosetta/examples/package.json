@@ -18,7 +18,7 @@
     "@types/temp-write": "4.0.0",
     "axios": "0.21.1",
     "delay": "4.4.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-validator": "^6.10.0",
     "newman": "^5.2.2",
     "ts-node": "8.10.2",
